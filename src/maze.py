@@ -42,7 +42,6 @@ class level:
         else:
             return 0
     
-
     
     
 

@@ -3,6 +3,7 @@ import maze
 import pygame 
 import sys
 import os
+import utils
 from pygame.locals import *
 
 
@@ -24,9 +25,6 @@ pygame.display.set_caption("Pacman")
 
 screen = pygame.display.get_surface()
 pygame.mouse.set_visible(False)
-
-if os.name == "nt":
-    SCRIPT_PATH = os.getcwd()
 
 
 # create game and level objects and load first level
