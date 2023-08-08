@@ -42,17 +42,6 @@ class level:
         else:
             return 0
     
-    def DrawMap(self, game, screen, tileIDImage, tileID):
-        for row in range(-1, game.screenTileSize[0] + 1):
-            for col in range(-1, game.screenTileSize[1] + 1):
-                actualRow = row
-                actualCol = col
-
-                useTile = self.GetMapTile((actualRow, actualCol))
-                if useTile != 0 and useTile != tileID['door-h'] and useTile != tileID['door-v']:
-                    # if this isn't a blank tile
-                    screen.blit(tileIDImage[useTile], (col * TILE_WIDTH - game.screenPixelOffset[0],
-                                                           row * TILE_HEIGHT - game.screenPixelOffset[1]))
     
     
 

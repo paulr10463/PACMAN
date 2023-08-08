@@ -11,10 +11,6 @@ from pygame.locals import *
 JS_DEVNUM = 0  # device 0 (pygame joysticks always start at 0). if JS_DEVNUM is not a valid device, will use 0
 
 
-
-# Size of tiles
-TILE_WIDTH = TILE_HEIGHT = 24
-
 # Must come before pygame.init()
 pygame.mixer.pre_init(22050, -16, 1, 1024)
 pygame.mixer.init()
@@ -31,16 +27,6 @@ screen = pygame.display.get_surface()
 pygame.mouse.set_visible(False)
 
 
-tileIDName = {}  # gives tile name (when the ID# is known)
-tileID = {}  # gives tile ID (when the name is known)
-tileIDImage = {}  # gives tile image (when the ID# is known)
-
-
-
-if os.name == "nt":
-    SCRIPT_PATH = os.getcwd()
-
-
 # create game and level objects and load first level
 thisGame = game.game()
 thisLevel = maze.level()
@@ -54,21 +40,9 @@ def CheckIfCloseButton(events):
         if event.type == QUIT:
             sys.exit(0)
 
-def GetCrossRef():
-    crossRefData = utils.readJson("res/crossref.json")
-    for element in crossRefData:
-            tileIDName[crossRefData[element]] = element
-            tileID[element] = crossRefData[element]
-            thisID = crossRefData[element]
-            tileIDImage[thisID] = utils.get_image_surface(os.path.join(SCRIPT_PATH, "res", "tiles", element + ".gif"))
-
-
-GetCrossRef()
-
 while True:
     CheckIfCloseButton(pygame.event.get())
-    thisLevel.DrawMap(thisGame, screen, tileIDImage, tileID)
-        
+    thisGame.DrawMap(thisLevel, screen)
     pygame.display.update()
 
 
