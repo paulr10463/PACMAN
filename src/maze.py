@@ -41,7 +41,25 @@ class level:
             return self.map[(row * self.lvlWidth) + col]
         else:
             return 0
+        
+    def IsWall(self, row_col):
+        (row, col) = row_col
+        if row > self.lvlHeight - 1 or row < 0:
+            return True
+
+        if col > self.lvlWidth - 1 or col < 0:
+            return True
+
+        # check the offending tile ID
+        result = self.GetMapTile((row, col))
+
+        # if the tile was a wall
+        if 100 <= result <= 199:
+            return True
+        else:
+            return False
     
+
     
     
 
