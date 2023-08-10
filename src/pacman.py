@@ -10,9 +10,9 @@ class pacman:
     def __init__(self):
         self.x = 1* TILE_WIDTH
         self.y = 1  * TILE_HEIGHT
-        self.velX = 0.5
+        self.velX = 2
         self.velY = 0
-        self.speed = 0.5
+        self.speed = 2
 
         self.nearestRow = 0
         self.nearestCol = 0
@@ -70,8 +70,7 @@ class pacman:
         elif self.velY < 0:
             self.anim_pacmanCurrent = self.anim_pacmanU
 
-        #print(self.velX)
-        #print(self.velY)
+
 
         screen.blit(self.anim_pacmanCurrent[self.animFrame],
                     (self.x, self.y))

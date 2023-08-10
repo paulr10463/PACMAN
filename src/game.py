@@ -54,14 +54,12 @@ class game:
                 if not (player.velX == player.speed and player.velY == 0) and not player.CheckIfHitWall(
                         (player.x + player.speed, player.y), (player.nearestRow, player.nearestCol), thisLevel):
                     player.velX = player.speed
-                    #print(player.velX)
                     player.velY = 0
 
             elif pygame.key.get_pressed()[pygame.K_LEFT]:
                 if not (player.velX == -player.speed and player.velY == 0) and not player.CheckIfHitWall(
                         (player.x - player.speed, player.y), (player.nearestRow, player.nearestCol), thisLevel):
                     player.velX = -player.speed
-                    print(player.velX)
                     player.velY = 0
 
             elif pygame.key.get_pressed()[pygame.K_DOWN]:
@@ -69,7 +67,6 @@ class game:
                         (player.x, player.y + player.speed), (player.nearestRow, player.nearestCol), thisLevel):
                     player.velX = 0
                     player.velY = player.speed
-                    print(player.velY)
 
             elif pygame.key.get_pressed()[pygame.K_UP]:
                 if not (player.velX == 0 and player.velY == -player.speed) and not player.CheckIfHitWall(
