@@ -1,9 +1,8 @@
 import game
 import maze
+import pacman
 import pygame 
 import sys
-import os
-import utils
 from pygame.locals import *
 
 
@@ -30,6 +29,7 @@ pygame.mouse.set_visible(False)
 # create game and level objects and load first level
 thisGame = game.game()
 thisLevel = maze.level()
+thisPacman = pacman.pacman()
 thisLevel.LoadLevel()
 
 #window = pygame.display.set_mode(thisGame.screenSize, pygame.FULLSCREEN)
@@ -42,8 +42,14 @@ def CheckIfCloseButton(events):
 
 while True:
     CheckIfCloseButton(pygame.event.get())
+    screen.fill((0, 0, 0))  # Fill the screen with black
+    thisGame.ChangeDirection(thisPacman, thisLevel)
     thisGame.DrawMap(thisLevel, screen)
+    thisPacman.Move(thisLevel, thisGame)
+    thisPacman.Draw(screen, thisGame)
+
     pygame.display.update()
+    clock.tick(60)
 
 
 
