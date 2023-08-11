@@ -5,21 +5,21 @@ import os
 WINDOW_WIDTH = 720
 WINDOW_HEIGHT = 720
 OUTPUT_PATH = Path(__file__).parent
-ASSETS_PATH = os.path.join(os.path.dirname(__file__), "assets", "frame0")
+ASSETS_PATH = os.getcwd()+"/res/mainMenu/"
 
 class MainMenu:
-
     rectangle_position = 0
     canvas = 0
     selector = 0
     options_positions = {}
     option = -1
+    window = 0
 
     def relative_to_assets(self, path: str) -> Path:
         return ASSETS_PATH / Path(path)
 
 
-    def on_key_press(self, event, window):
+    def on_key_press(self, event):
         if event.keysym == 'Up':
             self.rectangle_position = (self.rectangle_position - 1) % 3
         elif event.keysym == 'Down':
@@ -39,11 +39,11 @@ class MainMenu:
         if event.keysym == 'Return':
             if self.rectangle_position == 0:
                 self.option = 0
+                self.window.destroy()
             elif self.rectangle_position == 1:
                 self.option = 1
             elif self.rectangle_position == 2:
-                # Action for button_4 (Add your code here)
-                window.destroy()
+                self.window.destroy()
 
     def setImage(self, src, x, y):
         image = PhotoImage( file=self.relative_to_assets(src) )
@@ -51,22 +51,22 @@ class MainMenu:
         return image
         
     def show(self):
-        window = Tk()
+        self.window = Tk()
         ##################################################
-        window.title("Pacman")
+        self.window.title("Pacman")
         # Obtener dimensiones de la pantalla
-        screen_width = window.winfo_screenwidth()
-        screen_height = window.winfo_screenheight()
+        screen_width = self.window.winfo_screenwidth()
+        screen_height = self.window.winfo_screenheight()
 
         # Calcular coordenadas para centrar la ventana
         x_position = (screen_width - WINDOW_WIDTH) // 2
         y_position = (screen_height - WINDOW_HEIGHT) // 2
 
         # Establecer la geometría de la ventana
-        window.geometry(f"{WINDOW_WIDTH}x{WINDOW_HEIGHT}+{x_position}+{y_position}")
-        window.configure(bg="#222429")
+        self.window.geometry(f"{WINDOW_WIDTH}x{WINDOW_HEIGHT}+{x_position}+{y_position}")
+        self.window.configure(bg="#222429")
 
-        self.canvas = Canvas(window, bg = "#222429", height = 720, width = 720, bd = 0, highlightthickness = 0, relief = "ridge")
+        self.canvas = Canvas(self.window, bg = "#222429", height = 720, width = 720, bd = 0, highlightthickness = 0, relief = "ridge")
 
         ################## MENU ###################
 
@@ -137,8 +137,8 @@ class MainMenu:
             outline=""
         )
 
-        window.resizable(False, False)
-        window.bind('<KeyPress>', lambda event: self.on_key_press(event, window))
-        window.mainloop()
+        self.window.resizable(False, False)
+        self.window.bind('<KeyPress>', lambda event: self.on_key_press(event))
+        self.window.mainloop()
         return self.option
 
