@@ -20,6 +20,7 @@ class game:
     def __init__(self):
         self.lives = 3
         self.mode = 1
+        self.screenPixelPos = (0, 0)  # absolute x,y position of the screen from the upper-left corner of the level
         self.screenTileSize = (SCREEN_TILE_SIZE_HEIGHT, SCREEN_TILE_SIZE_WIDTH)
         self.screenSize = (self.screenTileSize[1] * TILE_WIDTH, self.screenTileSize[0] * TILE_HEIGHT)
         self.screenPixelOffset = (0, 0)  # offset in pixels of the screen from its nearest-tile position
@@ -82,7 +83,10 @@ class game:
                 self.StartNewGame()
                 
     def GetTileID(self):
-        return tileID                
+        return tileID     
+    
+    def GetTileIDImage(self):
+        return tileIDImage           
 
 
 

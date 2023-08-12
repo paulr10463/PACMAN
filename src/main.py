@@ -1,6 +1,8 @@
 import game
 import maze
 import pacman
+import ghost
+import path
 import pygame 
 import sys
 import mainMenu
@@ -28,7 +30,14 @@ if option == 0:
     thisGame = game.game()
     thisLevel = maze.level()
     thisPacman = pacman.pacman()
+    thisPath = path.path_finder()
     thisLevel.LoadLevel()
+    
+    # create ghost objects
+    ghosts = {}
+    for i in range(0, 6, 1):
+        # remember, ghost[4] is the blue, vulnerable ghost
+        ghosts[i] = ghost.ghost(i)
 
     #window = pygame.display.set_mode(thisGame.screenSize, pygame.FULLSCREEN)
     window = pygame.display.set_mode(thisGame.screenSize)
@@ -45,6 +54,8 @@ if option == 0:
         thisGame.DrawMap(thisLevel, screen)
         thisPacman.Move(thisLevel, thisGame)
         thisPacman.Draw(screen, thisGame)
+        for i in range(0, 4, 1):
+            ghosts[i].Draw(thisGame, thisPacman, screen, ghosts)
 
         pygame.display.update()
         clock.tick(60)
