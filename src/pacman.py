@@ -126,7 +126,19 @@ class pacman:
                     # check the offending tile ID
                     result = thisLevel.GetMapTile((iRow, iCol))
 
-                    if result == thisGame.GetTileID().get('door-h'):
+                    if result == thisGame.GetTileID().get('pellet'):
+                        # got a pellet
+                        thisLevel.SetMapTile((iRow, iCol), 0)
+                        thisGame.AddToScore(10)
+                        print("Score: " + str(thisGame.score))
+                    
+                    elif result == thisGame.GetTileID().get('pellet-power'):
+                        # got a super-pellet
+                        thisLevel.SetMapTile((iRow, iCol), 0)
+                        thisGame.AddToScore(50)
+                        print("Score: " + str(thisGame.score))
+
+                    elif result == thisGame.GetTileID().get('door-h'):
                         # ran into a horizontal door
                         for i in range(0, thisLevel.lvlWidth, 1):
                             if not i == iCol:
@@ -138,7 +150,7 @@ class pacman:
                                     else:
                                         self.x -= TILE_WIDTH
 
-                    elif result == thisGame.GetTileID().get('door-h'):
+                    elif result == thisGame.GetTileID().get('door-v'):
                         # ran into a vertical door
                         for i in range(0, thisLevel.lvlHeight, 1):
                             if not i == iRow:
