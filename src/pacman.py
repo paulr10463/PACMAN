@@ -29,6 +29,9 @@ class pacman:
 
         self.animFrame = 1
 
+        # Initialize points attribute
+        self.points = 0
+
         for i in range(1, 9, 1):
             self.anim_pacmanL[i] = utils.get_image_surface(
                 os.path.join(SCRIPT_PATH, "res", "sprite", "pacman-l " + str(i) + ".gif"))
@@ -58,6 +61,10 @@ class pacman:
             # we're going to hit a wall -- stop moving
             self.velX = 0
             self.velY = 0
+
+    # Add a method to update the points
+    def UpdatePoints(self, points):
+        self.points += points
 
     def Draw(self, screen, thisGame):
         # set the current frame array to match the direction pacman is facing
