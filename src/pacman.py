@@ -29,6 +29,9 @@ class pacman:
 
         self.animFrame = 1
 
+        # Initialize points attribute
+        self.points = 0
+
         for i in range(1, 9, 1):
             self.anim_pacmanL[i] = utils.get_image_surface(
                 os.path.join(SCRIPT_PATH, "res", "sprite", "pacman-l " + str(i) + ".gif"))
@@ -42,7 +45,7 @@ class pacman:
 
         self.pelletSndNum = 0
 
-    def Move(self, thisLevel, thisGame):
+    def Move(self, thisLevel, thisGame, ghosts, path):
         self.nearestRow = int(((self.y + (TILE_WIDTH / 2)) / TILE_WIDTH))
         self.nearestCol = int(((self.x + (TILE_HEIGHT / 2)) / TILE_HEIGHT))
 
@@ -54,10 +57,25 @@ class pacman:
             
             # check for collisions with other tiles (pellets, etc)
             self.CheckIfHitSomething((self.x, self.y), (self.nearestRow, self.nearestCol), thisLevel, thisGame)
+            
+            # check for collisions with the ghosts
+            for i in range(0, 4, 1):
+                if self.CheckIfHit((self.x, self.y), (ghosts[i].x, ghosts[i].y), TILE_WIDTH / 2):
+                    # hit a ghost
+
+                    if ghosts[i].state == 1:
+                        # ghost is normal
+                        #thisGame.SetMode(2)
+                        print("Crash")
+
         else:
             # we're going to hit a wall -- stop moving
             self.velX = 0
             self.velY = 0
+
+    # Add a method to update the points
+    def UpdatePoints(self, points):
+        self.points += points
 
     def Draw(self, screen, thisGame):
         # set the current frame array to match the direction pacman is facing
@@ -105,7 +123,7 @@ class pacman:
             return True
         else:
             return False
-        
+    
     def CheckIfHitSomething(self, playerX_playerY, row_col, thisLevel, thisGame):
         (playerX, playerY) = playerX_playerY
         (row, col) = row_col
@@ -154,3 +172,13 @@ class pacman:
                                         self.y += TILE_HEIGHT
                                     else:
                                         self.y -= TILE_HEIGHT
+
+    @staticmethod
+    def CheckIfHit(playerX_playerY, x_y, cushion):
+        (playerX, playerY) = playerX_playerY
+        (x, y) = x_y
+        if (playerX - x < cushion) and (playerX - x > -cushion) and (playerY - y < cushion) and (
+                playerY - y > -cushion):
+            return True
+        else:
+            return False

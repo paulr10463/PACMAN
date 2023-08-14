@@ -20,7 +20,7 @@ class level:
         self.fillColor = FILLCOLOR
         self.map = {}
 
-    def LoadLevel(self):      
+    def LoadLevel(self, path):      
         f = open(os.path.join(SCRIPT_PATH, "res", "levels", "1_design.txt"), 'r')
         rowNum = 0
         for line in f:
@@ -30,6 +30,16 @@ class level:
             rowNum += 1
 
         f.close()
+        
+        # load map into the pathfinder object
+        path.ResizeMap((self.lvlHeight, self.lvlWidth))
+
+        for row in range(0, path.size[0], 1):
+            for col in range(0, path.size[1], 1):
+                if self.IsWall((row, col)):
+                    path.SetType((row, col), 1)
+                else:
+                    path.SetType((row, col), 0)
 
     def SetMapTile(self, row_col, newValue):
         (row, col) = row_col
@@ -41,7 +51,7 @@ class level:
             return self.map[(row * self.lvlWidth) + col]
         else:
             return 0
-        
+    
     def IsWall(self, row_col):
         (row, col) = row_col
         if row > self.lvlHeight - 1 or row < 0:
@@ -58,6 +68,8 @@ class level:
             return True
         else:
             return False
+
+
     
 
     
