@@ -65,26 +65,9 @@ class pacman:
 
                     if ghosts[i].state == 1:
                         # ghost is normal
-                        thisGame.SetMode(2)
+                        #thisGame.SetMode(2)
+                        print("Crash")
 
-                    elif ghosts[i].state == 2:
-                        # ghost is vulnerable
-                        # give them glasses
-                        # make them run
-                        thisGame.AddToScore(thisGame.ghostValue)
-                        thisGame.ghostValue = thisGame.ghostValue * 2
-
-                        ghosts[i].state = 3
-                        ghosts[i].speed = ghosts[i].speed * 4
-                        # and send them to the ghost box
-                        ghosts[i].x = ghosts[i].nearestCol * TILE_WIDTH
-                        ghosts[i].y = ghosts[i].nearestRow * TILE_HEIGHT
-                        ghosts[i].currentPath = path.FindPath((ghosts[i].nearestRow, ghosts[i].nearestCol), (
-                            thisLevel.GetGhostBoxPos()[0] + 1, thisLevel.GetGhostBoxPos()[1]))
-                        ghosts[i].FollowNextPathWay()
-
-                        # set game mode to brief pause after eating
-                        thisGame.SetMode(5)
         else:
             # we're going to hit a wall -- stop moving
             self.velX = 0
