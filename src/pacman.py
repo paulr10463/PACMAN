@@ -122,14 +122,14 @@ class pacman:
                     if result == thisGame.GetTileID().get('pellet'):
                         # got a pellet
                         thisLevel.SetMapTile((iRow, iCol), 0)
-                        #thisGame.AddToScore(10)
-                        #print("Score: " + str(thisGame.score))
+                        thisGame.AddToScore(10)
+                        print("Score: " + str(thisGame.score))
                     
                     elif result == thisGame.GetTileID().get('pellet-power'):
                         # got a super-pellet
                         thisLevel.SetMapTile((iRow, iCol), 0)
-                        #thisGame.AddToScore(50)
-                        #print("Score: " + str(thisGame.score))
+                        thisGame.AddToScore(50)
+                        print("Score: " + str(thisGame.score))
 
                     elif result == thisGame.GetTileID().get('door-h'):
                         # ran into a horizontal door
