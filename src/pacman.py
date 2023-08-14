@@ -45,7 +45,7 @@ class pacman:
 
         self.pelletSndNum = 0
 
-    def Move(self, thisLevel, thisGame):
+    def Move(self, thisLevel, thisGame, ghosts, path):
         self.nearestRow = int(((self.y + (TILE_WIDTH / 2)) / TILE_WIDTH))
         self.nearestCol = int(((self.x + (TILE_HEIGHT / 2)) / TILE_HEIGHT))
 
@@ -57,6 +57,34 @@ class pacman:
             
             # check for collisions with other tiles (pellets, etc)
             self.CheckIfHitSomething((self.x, self.y), (self.nearestRow, self.nearestCol), thisLevel, thisGame)
+            
+            # check for collisions with the ghosts
+            for i in range(0, 4, 1):
+                if self.CheckIfHit((self.x, self.y), (ghosts[i].x, ghosts[i].y), TILE_WIDTH / 2):
+                    # hit a ghost
+
+                    if ghosts[i].state == 1:
+                        # ghost is normal
+                        thisGame.SetMode(2)
+
+                    elif ghosts[i].state == 2:
+                        # ghost is vulnerable
+                        # give them glasses
+                        # make them run
+                        thisGame.AddToScore(thisGame.ghostValue)
+                        thisGame.ghostValue = thisGame.ghostValue * 2
+
+                        ghosts[i].state = 3
+                        ghosts[i].speed = ghosts[i].speed * 4
+                        # and send them to the ghost box
+                        ghosts[i].x = ghosts[i].nearestCol * TILE_WIDTH
+                        ghosts[i].y = ghosts[i].nearestRow * TILE_HEIGHT
+                        ghosts[i].currentPath = path.FindPath((ghosts[i].nearestRow, ghosts[i].nearestCol), (
+                            thisLevel.GetGhostBoxPos()[0] + 1, thisLevel.GetGhostBoxPos()[1]))
+                        ghosts[i].FollowNextPathWay()
+
+                        # set game mode to brief pause after eating
+                        thisGame.SetMode(5)
         else:
             # we're going to hit a wall -- stop moving
             self.velX = 0
@@ -112,7 +140,7 @@ class pacman:
             return True
         else:
             return False
-        
+    
     def CheckIfHitSomething(self, playerX_playerY, row_col, thisLevel, thisGame):
         (playerX, playerY) = playerX_playerY
         (row, col) = row_col
@@ -161,3 +189,13 @@ class pacman:
                                         self.y += TILE_HEIGHT
                                     else:
                                         self.y -= TILE_HEIGHT
+
+    @staticmethod
+    def CheckIfHit(playerX_playerY, x_y, cushion):
+        (playerX, playerY) = playerX_playerY
+        (x, y) = x_y
+        if (playerX - x < cushion) and (playerX - x > -cushion) and (playerY - y < cushion) and (
+                playerY - y > -cushion):
+            return True
+        else:
+            return False

@@ -30,8 +30,8 @@ if option == 0:
     thisGame = game.game()
     thisLevel = maze.level()
     thisPacman = pacman.pacman()
-    thisPath = path.path_finder(thisLevel.lvlWidth, thisLevel.lvlHeight)
-    thisLevel.LoadLevel()
+    thisPath = path.path_finder()
+    thisLevel.LoadLevel(thisPath)
     
     # create ghost objects
     ghosts = {}
@@ -59,14 +59,15 @@ if option == 0:
 
         thisGame.ChangeDirection(thisPacman, thisLevel)
         thisGame.DrawMap(thisLevel, screen)
-        thisPacman.Move(thisLevel, thisGame)
-        thisPacman.Draw(screen, thisGame)
-
-        
-        ghosts[3].Move(thisPath, thisPacman, thisLevel, thisGame)
-
+        thisPacman.Move(thisLevel, thisGame, ghosts, thisPath)
+        for i in range(0, 4, 1):
+            ghosts[i].Move(thisPath, thisPacman, thisGame, thisLevel)
+            
+            
         for i in range(0, 4, 1):
             ghosts[i].Draw(thisGame, thisPacman, screen, ghosts)
+        
+        thisPacman.Draw(screen, thisGame)
         
         pygame.display.update()
         clock.tick(60)

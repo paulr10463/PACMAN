@@ -3,13 +3,12 @@ import node
 TILE_WIDTH = TILE_HEIGHT = 24
 
 class path_finder:
-    def __init__(self, rows, cols):
+    def __init__(self):
         # map is a 1-DIMENSIONAL array.
         # use the Unfold( (row, col) ) function to convert a 2D coordinate pair
         # into a 1D index to use with this array.
-        self.size = (rows, cols)
+        self.size = (-1, -1)  # rows by columns
         self.map = {}  # Inicializar el diccionario
-        self.InitMap()
 
         self.pathChainRev = ""
         self.pathChain = ""
@@ -28,11 +27,16 @@ class path_finder:
         # used in algorithm (adjacent neighbors path finder is allowed to consider)
         self.neighborSet = [(0, -1), (0, 1), (-1, 0), (1, 0)]
 
-    # Luego, en tu función InitMap() podrías configurar los valores iniciales para cada celda en el mapa
-    def InitMap(self):
-        for row in range(self.size[0]):
-            for col in range(self.size[1]):
-                self.map[self.Unfold((row, col))] = node.node()
+    def ResizeMap(self, numRows_numCols):
+        (numRows, numCols) = numRows_numCols
+        self.map = {}
+        self.size = (numRows, numCols)
+
+        # initialize path_finder map to a 2D array of empty nodes
+        for row in range(0, self.size[0], 1):
+            for col in range(0, self.size[1], 1):
+                self.Set((row, col), node.node())
+                self.SetType((row, col), 0)
                 
     def CleanUpTemp(self):
         # this resets variables needed for a search (but preserves the same map / maze)
