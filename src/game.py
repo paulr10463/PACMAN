@@ -23,7 +23,8 @@ class game:
         self.screenTileSize = (SCREEN_TILE_SIZE_HEIGHT, SCREEN_TILE_SIZE_WIDTH)
         self.screenSize = (self.screenTileSize[1] * TILE_WIDTH, self.screenTileSize[0] * TILE_HEIGHT)
         self.screenPixelOffset = (0, 0)  # offset in pixels of the screen from its nearest-tile position
-
+        self.score = 0
+        
     def StartNewGame(self):
         self.score = 0
         self.lives = 3
@@ -36,6 +37,7 @@ class game:
                 thisID = crossRefData[element]
                 tileIDImage[thisID] = utils.get_image_surface(os.path.join(SCRIPT_PATH, "res", "tiles", element + ".gif"))
 
+
     def DrawMap(self, level, screen):
         self.GetCrossRef()
         for row in range(-1, self.screenTileSize[0] + 1):
@@ -45,7 +47,11 @@ class game:
                 useTile = level.GetMapTile((actualRow, actualCol))
                 if useTile != 0 and useTile != tileID['door-h'] and useTile != tileID['door-v']:
                     # if this isn't a blank tile
-                    screen.blit(tileIDImage[useTile], (col * TILE_WIDTH ,
+                    if useTile == tileID['pellet']:
+                        screen.blit(tileIDImage[useTile], (col * TILE_WIDTH ,
+                                                           row * TILE_HEIGHT))                   
+                    else:
+                        screen.blit(tileIDImage[useTile], (col * TILE_WIDTH ,
                                                            row * TILE_HEIGHT))
                     
     def ChangeDirection(self, player, thisLevel):
@@ -80,9 +86,12 @@ class game:
         elif self.mode == 3:
             if pygame.key.get_pressed()[pygame.K_RETURN]:
                 self.StartNewGame()
-                
+       
     def GetTileID(self):
-        return tileID                
+        return tileID    
+
+    def AddToScore(self, amount):
+        self.score += amount            
 
 
 
