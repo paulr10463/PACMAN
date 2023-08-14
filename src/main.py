@@ -62,8 +62,8 @@ if option == 0:
         thisPacman.Move(thisLevel, thisGame)
         thisPacman.Draw(screen, thisGame)
 
-        for i in range(0, 4, 1):
-            ghosts[i].Move(thisPath, thisPacman, thisLevel, thisGame)
+        
+        ghosts[3].Move(thisPath, thisPacman, thisLevel, thisGame)
 
         for i in range(0, 4, 1):
             ghosts[i].Draw(thisGame, thisPacman, screen, ghosts)

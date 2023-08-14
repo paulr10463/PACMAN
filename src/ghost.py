@@ -92,7 +92,7 @@ class ghost:
         if self.state == 1:
             # draw regular ghost (this one)
             screen.blit(self.anim[self.animFrame],
-                        (self.x - thisGame.screenPixelPos[0], self.y - thisGame.screenPixelPos[1]))
+                        (self.x - thisGame.screenPixelOffset[0], self.y - thisGame.screenPixelOffset[1]))
         elif self.state == 2:
             # draw vulnerable ghost
 
@@ -144,26 +144,89 @@ class ghost:
         if (self.x % TILE_WIDTH) == 0 and (self.y % TILE_HEIGHT) == 0:
             # Actualiza la velocidad en función de los puntos obtenidos por Pac-Man
             self.UpdateSpeed(player)
-            
-            # if the ghost is lined up with the grid again
-            # meaning, it's time to go to the next path item
 
-            if self.currentPath is not False and (len(self.currentPath) > 0):
-                self.currentPath = self.currentPath[1:]
-                self.FollowNextPathWay(path, player, thisLevel, thisGame)
+            # Calcula la posición posible después del movimiento
+            possiblePlayerX = self.x + self.velX
+            possiblePlayerY = self.y + self.velY
+            possibleRow = int(((possiblePlayerY + (TILE_HEIGHT / 2)) / TILE_HEIGHT))
+            possibleCol = int(((possiblePlayerX + (TILE_HEIGHT / 2)) / TILE_WIDTH))
 
-            else:
-                self.x = self.nearestCol * TILE_WIDTH
-                self.y = self.nearestRow * TILE_HEIGHT
-
-                # chase pac-man
-                self.currentPath = path.FindPath((self.nearestRow, self.nearestCol),
-                                                 (player.nearestRow, player.nearestCol))
+            # Verifica si el movimiento resultará en una colisión con una pared
+            if not self.CheckIfHitWall((possiblePlayerX, possiblePlayerY), (possibleRow, possibleCol), thisLevel):
+                # Si no hay colisión, realiza el movimiento
+                self.x = possiblePlayerX
+                self.y = possiblePlayerY
+                self.nearestRow = possibleRow
+                self.nearestCol = possibleCol
                 
-                self.FollowNextPathWay(path, player, thisLevel, thisGame)
+                # Si estamos en los bordes del tablero, ajustamos las coordenadas
+                if self.nearestRow == thisLevel.lvlHeight - 1:
+                    self.nearestRow = thisLevel.lvlHeight - 2
+                    self.y = self.nearestRow * TILE_HEIGHT
+                if self.nearestCol == thisLevel.lvlWidth - 1:
+                    self.nearestCol = thisLevel.lvlWidth - 2
+                    self.x = self.nearestCol * TILE_WIDTH
+
+                # Busca una dirección posible para moverse
+                possible_directions = []
+                if not self.CheckIfHitWall((self.x + self.speed, self.y), (self.nearestRow, self.nearestCol), thisLevel):
+                    possible_directions.append((self.speed, 0))
+                if not self.CheckIfHitWall((self.x - self.speed, self.y), (self.nearestRow, self.nearestCol), thisLevel):
+                    possible_directions.append((-self.speed, 0))
+                if not self.CheckIfHitWall((self.x, self.y + self.speed), (self.nearestRow, self.nearestCol), thisLevel):
+                    possible_directions.append((0, self.speed))
+                if not self.CheckIfHitWall((self.x, self.y - self.speed), (self.nearestRow, self.nearestCol), thisLevel):
+                    possible_directions.append((0, -self.speed))
+                
+                if possible_directions:
+                    chosen_direction = random.choice(possible_directions)
+                    self.velX, self.velY = chosen_direction[0], chosen_direction[1]
+
+                # if the ghost is lined up with the grid again
+                # meaning, it's time to go to the next path item
+                if self.currentPath is not False and (len(self.currentPath) > 0):
+                    self.currentPath = self.currentPath[1:]
+                    self.FollowNextPathWay(path, player, thisLevel, thisGame)
+
+                else:
+                    self.x = self.nearestCol * TILE_WIDTH
+                    self.y = self.nearestRow * TILE_HEIGHT
+
+                    # chase pac-man
+                    self.currentPath = path.FindPath((self.nearestRow, self.nearestCol),
+                                                    (player.nearestRow, player.nearestCol))
+                    
+                    self.FollowNextPathWay(path, player, thisLevel, thisGame)
+
+        else:
+            # Si el fantasma no está en una posición de cuadrícula, sigue moviéndose en la misma dirección
+            self.FollowNextPathWay(path, player, thisLevel, thisGame)
+
+
+    def CheckIfHitWall(self, possiblePlayerX_possiblePlayerY, row_col, thisLevel):
+        (possiblePlayerX, possiblePlayerY) = possiblePlayerX_possiblePlayerY
+        (row, col) = row_col
+        numCollisions = 0
+
+        # check each of the 9 surrounding tiles for a collision
+        for iRow in range(row - 1, row + 2, 1):
+            for iCol in range(col - 1, col + 2, 1):
+
+                if (possiblePlayerX - (iCol * TILE_WIDTH) < TILE_WIDTH) and (
+                        possiblePlayerX - (iCol * TILE_WIDTH) > -TILE_WIDTH) and (
+                        possiblePlayerY - (iRow * TILE_HEIGHT) < TILE_HEIGHT) and (
+                        possiblePlayerY - (iRow * TILE_HEIGHT) > -TILE_HEIGHT):
+
+                    if thisLevel.IsWall((iRow, iCol)):
+                        numCollisions += 1
+
+        if numCollisions > 0:
+            return True
+        else:
+            return False
 
     def FollowNextPathWay(self, path, player, thisLevel, thisGame):
-        while self.currentPath and isinstance(self.currentPath, (list, str)):
+        while self.currentPath:
             if self.currentPath[0] == "L":
                 (self.velX, self.velY) = (-self.speed, 0)
             elif self.currentPath[0] == "R":
