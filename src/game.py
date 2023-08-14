@@ -4,12 +4,19 @@ import os
 import pygame
 import sys
 
+ASSETS_PATH = os.getcwd()+"/res/text/"
+
 if os.name == "nt":
     SCRIPT_PATH = os.getcwd()
 
 SCREEN_TILE_SIZE_HEIGHT = 24
 SCREEN_TILE_SIZE_WIDTH = 20
 TILE_WIDTH = TILE_HEIGHT = 24
+
+# new constants for the score's position
+SCORE_XOFFSET = 50  # pixels from left edge
+SCORE_YOFFSET = 34  # pixels from bottom edge (to top of score)
+rect_list = []  # rect list for drawing
 
 
 tileIDName = {}  # gives tile name (when the ID# is known)
@@ -24,7 +31,9 @@ class game:
         self.screenSize = (self.screenTileSize[1] * TILE_WIDTH, self.screenTileSize[0] * TILE_HEIGHT)
         self.screenPixelOffset = (0, 0)  # offset in pixels of the screen from its nearest-tile position
         self.score = 0
-        
+        self.imLife = utils.get_image_surface(os.path.join(SCRIPT_PATH, "res", "text", "life.gif"))
+
+
     def StartNewGame(self):
         self.score = 0
         self.lives = 3
@@ -53,7 +62,15 @@ class game:
                     else:
                         screen.blit(tileIDImage[useTile], (col * TILE_WIDTH ,
                                                            row * TILE_HEIGHT))
-                    
+
+#LifeCounter 
+    def DrawLifes(self,screen):
+        for i in range(0, self.lives, 1):
+            life_image = pygame.transform.scale(self.imLife, (20, 20))
+            screen.blit(life_image, (34 + i * 20 + 16, self.screenSize[1] - 30))
+
+    
+    
     def ChangeDirection(self, player, thisLevel):
         if self.mode == 1 or self.mode == 8 or self.mode == 9:
             if pygame.key.get_pressed()[pygame.K_RIGHT]:

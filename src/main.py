@@ -43,6 +43,7 @@ if option == 0:
         screen.fill((0, 0, 0))  # Fill the screen with black
         thisGame.ChangeDirection(thisPacman, thisLevel)
         thisGame.DrawMap(thisLevel, screen)
+        thisGame.DrawLifes(screen)
         thisPacman.Move(thisLevel, thisGame)
         thisPacman.Draw(screen, thisGame)
 
