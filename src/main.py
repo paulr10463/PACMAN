@@ -59,13 +59,13 @@ if option == 0:
 
         thisGame.ChangeDirection(thisPacman, thisLevel)
         thisGame.DrawMap(thisLevel, screen)
+        thisGame.DrawLifes(screen)
         thisPacman.Move(thisLevel, thisGame, ghosts, thisPath)
-        ghosts[3].Move(thisPath, thisPacman, thisGame, thisLevel)
-            
-            
+        ghosts[3].Move(thisPath, thisPacman, thisGame, thisLevel)           
         for i in range(0, 4, 1):
             ghosts[i].Draw(thisGame, thisPacman, screen, ghosts)
         
+
         thisPacman.Draw(screen, thisGame)
         
         pygame.display.update()
