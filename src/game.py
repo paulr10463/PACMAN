@@ -62,13 +62,38 @@ class game:
                     else:
                         screen.blit(tileIDImage[useTile], (col * TILE_WIDTH ,
                                                            row * TILE_HEIGHT))
+        # RF 13 : Check if the player has completed the maze successfully
+        if self.HasPlayerCompletedMaze(level):
+            self.IncrementLives()  # Increment lives if maze is completed
 
-#LifeCounter 
+        self.DrawLifes(screen)  # Draw player's remaining lives
+
+    # RF 13 :
+    def HasPlayerCompletedMaze(self, level):
+        # Loop through the entire map and check if there are any remaining pellets
+        for row in range(level.lvlHeight):
+            for col in range(level.lvlWidth):
+                if level.GetMapTile((row, col)) == tileID['pellet']:
+                    return False  # If there is at least one pellet remaining, maze is not completed
+
+        return True  # If no pellets are remaining, maze is completed
+    
+    # RF 13 : Incrementar la vida 
+    def IncrementLives(self):
+        if self.lives < 3:
+            self.lives += 1 
+
+    #LifeCounter 
     def DrawLifes(self,screen):
-        for i in range(0, self.lives, 1):
-            life_image = pygame.transform.scale(self.imLife, (20, 20))
-            screen.blit(life_image, (34 + i * 20 + 16, self.screenSize[1] - 30))
+        #RF 13: Maximo de vidas 3
+        if self.lives > 3:
+            self.lives = 3  # Limit the lives to a maximum of 3
 
+        life_image = pygame.transform.scale(self.imLife, (20, 20))
+        for i in range(0, self.lives, 1):
+            screen.blit(life_image, (SCORE_XOFFSET + i * 20 + 16, self.screenSize[1] - SCORE_YOFFSET))
+
+        pygame.display.update() 
     
     
     def ChangeDirection(self, player, thisLevel):
