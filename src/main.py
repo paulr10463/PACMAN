@@ -40,9 +40,9 @@ if option == 0:
         ghosts[i] = ghost.ghost(i)
 
     # Set the initial position of the red ghost (ghosts[3]) to the middle of the board
-    ##red_ghost = ghosts[3]
-    ##red_ghost.nearestRow = thisGame.screenSize[1] // (2 * TILE_HEIGHT)
-    ##red_ghost.nearestCol = thisGame.screenSize[0] // (2 * TILE_WIDTH)
+    #red_ghost = ghosts[3]
+    #red_ghost.nearestRow = thisGame.screenSize[1] // (2 * TILE_HEIGHT)
+    #red_ghost.nearestCol = thisGame.screenSize[0] // (2 * TILE_WIDTH)
 
     #window = pygame.display.set_mode(thisGame.screenSize, pygame.FULLSCREEN)
     window = pygame.display.set_mode(thisGame.screenSize)
@@ -61,7 +61,8 @@ if option == 0:
         thisGame.DrawMap(thisLevel, screen)
         thisGame.DrawLifes(screen)
         thisPacman.Move(thisLevel, thisGame, ghosts, thisPath)
-        ghosts[3].Move(thisPath, thisPacman, thisGame, thisLevel)           
+        ghosts[3].Move(thisPath, thisPacman, thisGame, thisLevel)   
+        ghosts[0].MoveRedGhost(thisPath, thisPacman, thisGame, thisLevel)
         for i in range(0, 4, 1):
             ghosts[i].Draw(thisGame, thisPacman, screen, ghosts)
         

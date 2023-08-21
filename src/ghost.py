@@ -8,13 +8,13 @@ if os.name == "nt":
 TILE_WIDTH = TILE_HEIGHT = 24
 
 ghostcolor = {
-    0: (255, 0, 0, 255),
-    1: (255, 128, 255, 255),
-    2: (128, 255, 255, 255),
-    3: (255, 128, 0, 255),
-    4: (50, 50, 255, 255),
-    5: (255, 255, 255, 255)}
-
+    0: (255, 0, 0, 255),    # Rojo (Red)
+    1: (255, 128, 255, 255), # Rosa (Pink)
+    2: (128, 255, 255, 255), # Cian (Cyan)
+    3: (255, 128, 0, 255),   # Naranja (Orange)
+    4: (50, 50, 255, 255),   # Azul (Blue)
+    5: (255, 255, 255, 255)  # Blanco (White)
+}
 class ghost:
     def __init__(self, ghostID):
         self.x = 10  * TILE_HEIGHT
@@ -157,6 +157,79 @@ class ghost:
                 self.currentPath = path.FindPath((self.nearestRow, self.nearestCol),
                                                  (player.nearestRow, player.nearestCol))
                 self.FollowNextPathWay(path, player, thisLevel, thisGame)
+
+    def MoveRedGhost(self, path, player, thisGame, thisLevel):
+        distance = abs(self.nearestRow - player.nearestRow) + abs(self.nearestCol - player.nearestCol)
+        if distance >= 8:
+            # Si la distancia es mayor o igual a 8, persigue directamente a Pac-Man
+            self.Move(path, player, thisGame, thisLevel)
+        else:
+            # Si está dentro del radio de 8 espacios, retírate a la esquina inferior izquierda
+            targetRow, targetCol = thisLevel.lvlHeight - 1, 0
+
+            if self.nearestRow < targetRow:
+                self.velY = self.speed
+                self.velX = 0
+            elif self.nearestRow > targetRow:
+                self.velY = -self.speed
+                self.velX = 0
+            elif self.nearestCol < targetCol:
+                self.velX = self.speed
+                self.velY = 0
+            elif self.nearestCol > targetCol:
+                self.velX = -self.speed
+                self.velY = 0
+            else:
+                self.velX = 0
+                self.velY = 0
+
+            # Actualizar la posición y verificar si el fantasma llegó a una intersección
+            self.x += self.velX
+            self.y += self.velY
+
+            self.nearestRow = int(((self.y + (TILE_HEIGHT / 2)) / TILE_HEIGHT))
+            self.nearestCol = int(((self.x + (TILE_HEIGHT / 2)) / TILE_WIDTH))
+
+            # Asegurarse de que el fantasma permanezca dentro de los límites del nivel
+            self.x = max(TILE_WIDTH, min(thisLevel.lvlWidth * TILE_WIDTH - TILE_WIDTH, self.x))
+            self.y = max(TILE_HEIGHT, min(thisLevel.lvlHeight * TILE_HEIGHT - TILE_HEIGHT, self.y))
+
+
+
+    def MoveOrangeGhost(self, path, player, thisGame, thisLevel):
+        # Calcular la distancia entre el fantasma naranja y Pac-Man
+        distance = abs(self.nearestRow - player.nearestRow) + abs(self.nearestCol - player.nearestCol)
+        
+        if distance >= 8:
+            # Si la distancia es mayor o igual a 8, persigue directamente a Pac-Man
+            self.MoveRedGhost(path, player, thisGame, thisLevel)
+        else:
+            # Si está dentro del radio de 8 espacios, retírate a la esquina inferior izquierda
+            targetRow, targetCol = thisLevel.lvlHeight - 1, 0
+            
+            # Mover hacia la esquina inferior izquierda
+            if self.nearestRow < targetRow:
+                self.velY = self.speed
+                self.velX = 0
+            elif self.nearestRow > targetRow:
+                self.velY = -self.speed
+                self.velX = 0
+            elif self.nearestCol < targetCol:
+                self.velX = self.speed
+                self.velY = 0
+            elif self.nearestCol > targetCol:
+                self.velX = -self.speed
+                self.velY = 0
+            else:
+                self.velX = 0
+                self.velY = 0
+
+            # Actualizar la posición y verificar si el fantasma llegó a una intersección
+            self.x += self.velX
+            self.y += self.velY
+
+            self.nearestRow = int(((self.y + (TILE_HEIGHT / 2)) / TILE_HEIGHT))
+            self.nearestCol = int(((self.x + (TILE_HEIGHT / 2)) / TILE_WIDTH))
 
     def FollowNextPathWay(self, path, player, thisLevel, thisGame):
         # print "Ghost " + str(self.id) + " rem: " + self.currentPath
