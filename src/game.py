@@ -34,9 +34,10 @@ class game:
         self.imLife = utils.get_image_surface(os.path.join(SCRIPT_PATH, "res", "text", "life.gif"))
 
 
-    def StartNewGame(self):
+    def StartNewGame(self, ghosts, thisPacman, thisPath, thisLevel):
         self.score = 0
         self.lives = 3
+                
     
     def GetCrossRef(self):
         crossRefData = utils.readJson("res/crossref.json")

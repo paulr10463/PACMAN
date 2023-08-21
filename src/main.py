@@ -2,12 +2,15 @@ import game
 import maze
 import pacman
 import ghost
-import path
 import pygame 
 import sys
 import mainMenu
 from pygame.locals import *
 import os 
+import path
+import random
+
+TILE_WIDTH = TILE_HEIGHT = 24
 
 os.environ['SDL_VIDEO_WINDOW_POS'] = '800,350'
 
@@ -40,9 +43,9 @@ if option == 0:
         ghosts[i] = ghost.ghost(i)
 
     # Set the initial position of the red ghost (ghosts[3]) to the middle of the board
-    ##red_ghost = ghosts[3]
-    ##red_ghost.nearestRow = thisGame.screenSize[1] // (2 * TILE_HEIGHT)
-    ##red_ghost.nearestCol = thisGame.screenSize[0] // (2 * TILE_WIDTH)
+    #red_ghost = ghosts[3]
+    #red_ghost.nearestRow = thisGame.screenSize[1] // (2 * TILE_HEIGHT)
+    #red_ghost.nearestCol = thisGame.screenSize[0] // (2 * TILE_WIDTH)
 
     #window = pygame.display.set_mode(thisGame.screenSize, pygame.FULLSCREEN)
     window = pygame.display.set_mode(thisGame.screenSize)
@@ -61,7 +64,27 @@ if option == 0:
         thisGame.DrawMap(thisLevel, screen)
         thisGame.DrawLifes(screen)
         thisPacman.Move(thisLevel, thisGame, ghosts, thisPath)
-        ghosts[3].Move(thisPath, thisPacman, thisGame, thisLevel)           
+        ##ghosts[0].Move(thisPath, thisPacman, thisGame, thisLevel)   
+        ##ghosts[2].Move(thisPath, thisPacman, thisGame, thisLevel)  
+        
+        
+        for i in range(0, 4, 1):
+            ghosts[i].Move(thisPath, thisPacman, thisGame, thisLevel)
+
+            if(pygame.time.get_ticks() < 500):
+                print("Xd")
+                # give each ghost a path to a random spot (containing a pellet)
+                (randRow, randCol) = (0, 0)
+
+                while not thisLevel.GetMapTile((randRow, randCol)) == thisGame.GetTileID()['pellet'] or (randRow, randCol) == (0, 0):
+                    randRow = random.randint(1, thisLevel.lvlHeight - 2)
+                    randCol = random.randint(1, thisLevel.lvlWidth - 2)
+
+                # print "Ghost " + str(i) + " headed towards " + str((randRow, randCol))
+                ghosts[i].currentPath = thisPath.FindPath((ghosts[i].nearestRow, ghosts[i].nearestCol), (randRow, randCol))
+                ghosts[i].FollowNextPathWay(thisPath, thisPacman, thisLevel, thisGame)
+            
+        
         for i in range(0, 4, 1):
             ghosts[i].Draw(thisGame, thisPacman, screen, ghosts)
         
