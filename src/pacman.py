@@ -141,13 +141,11 @@ class pacman:
                         # got a pellet
                         thisLevel.SetMapTile((iRow, iCol), 0)
                         thisGame.AddToScore(10)
-                        print("Score: " + str(thisGame.score))
                     
                     elif result == thisGame.GetTileID().get('pellet-power'):
                         # got a super-pellet
                         thisLevel.SetMapTile((iRow, iCol), 0)
                         thisGame.AddToScore(50)
-                        print("Score: " + str(thisGame.score))
 
                     elif result == thisGame.GetTileID().get('door-h'):
                         # ran into a horizontal door
@@ -160,6 +158,10 @@ class pacman:
                                         self.x += TILE_WIDTH
                                     else:
                                         self.x -= TILE_WIDTH
+
+                    elif result in thisGame.GetFruitTiles():
+                        thisGame.setFruitEaten(thisLevel)
+
 
                     elif result == thisGame.GetTileID().get('door-v'):
                         # ran into a vertical door

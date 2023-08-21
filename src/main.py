@@ -58,7 +58,7 @@ if option == 0:
         screen.fill((0, 0, 0))  # Fill the screen with black
 
         thisGame.ChangeDirection(thisPacman, thisLevel)
-        thisGame.DrawMap(thisLevel, screen)
+        thisGame.DrawMap(thisLevel, screen, pygame.time.get_ticks())
         thisGame.DrawLifes(screen)
         thisPacman.Move(thisLevel, thisGame, ghosts, thisPath)
         ghosts[3].Move(thisPath, thisPacman, thisGame, thisLevel)           
