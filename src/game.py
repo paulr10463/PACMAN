@@ -68,6 +68,7 @@ class game:
                     else:
                         screen.blit(tileIDImage[useTile], (col * TILE_WIDTH ,
                                                            row * TILE_HEIGHT))
+        self.Pause(screen)
 
 #LifeCounter 
     def DrawLifes(self,screen):
@@ -77,9 +78,7 @@ class game:
 #PauseFunction
     def Pause(self,screen):
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-            elif event.type == pygame.KEYDOWN:
+            if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_p:
                     self.paused = not self.paused 
         while self.paused:
