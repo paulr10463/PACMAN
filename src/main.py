@@ -71,7 +71,7 @@ if option == 0:
         for i in range(0, 4, 1):
             ghosts[i].Move(thisPath, thisPacman, thisGame, thisLevel)
 
-            if(pygame.time.get_ticks() < 500):
+            if(pygame.time.get_ticks() < 250):
                 print("Xd")
                 # give each ghost a path to a random spot (containing a pellet)
                 (randRow, randCol) = (0, 0)
