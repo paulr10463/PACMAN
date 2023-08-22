@@ -71,7 +71,26 @@ if option == 0:
         for i in range(0, 4, 1):
             ghosts[i].Move(thisPath, thisPacman, thisGame, thisLevel)
 
-            if(pygame.time.get_ticks() < 250):
+            (randRow, randCol) = (0, 0)
+            if pygame.time.get_ticks() < 350:
+                if i == 0:  # Rojo
+                    randRow = 1  # Esquina superior izquierda
+                    randCol = 1
+                elif i == 1:  # Rosa
+                    randRow = 1  # Mover hacia arriba y luego a la izquierda
+                    randCol = thisLevel.lvlWidth - 2
+                elif i == 2:  # Rosa
+                    randRow = thisLevel.lvlHeight - 3  # Esquina superior derecha
+                    randCol = 1
+                elif i == 3:  # Celeste
+                    randRow = thisLevel.lvlHeight - 3  # Esquina inferior derecha
+                    randCol = thisLevel.lvlWidth - 2
+                
+                ghosts[i].currentPath = thisPath.FindPath((ghosts[i].nearestRow, ghosts[i].nearestCol), (randRow, randCol))
+                ghosts[i].FollowNextPathWay(thisPath, thisPacman, thisLevel, thisGame)
+
+
+            """if(pygame.time.get_ticks() < 250):
                 print("Xd")
                 # give each ghost a path to a random spot (containing a pellet)
                 (randRow, randCol) = (0, 0)
@@ -82,7 +101,7 @@ if option == 0:
 
                 # print "Ghost " + str(i) + " headed towards " + str((randRow, randCol))
                 ghosts[i].currentPath = thisPath.FindPath((ghosts[i].nearestRow, ghosts[i].nearestCol), (randRow, randCol))
-                ghosts[i].FollowNextPathWay(thisPath, thisPacman, thisLevel, thisGame)
+                ghosts[i].FollowNextPathWay(thisPath, thisPacman, thisLevel, thisGame)"""
             
         
         for i in range(0, 4, 1):
