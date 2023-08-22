@@ -5,7 +5,7 @@ import pygame
 import sys
 
 ASSETS_PATH = os.getcwd()+"/res/text/"
-
+LAP_TIME = 10000
 if os.name == "nt":
     SCRIPT_PATH = os.getcwd()
 
@@ -23,6 +23,7 @@ tileIDName = {}  # gives tile name (when the ID# is known)
 tileID = {}  # gives tile ID (when the name is known)
 tileIDImage = {}  # gives tile image (when the ID# is known)
 
+
 class game:
     def __init__(self):
         self.lives = 3
@@ -37,12 +38,16 @@ class game:
         self.pause_Img_scaled=pygame.transform.scale(self.imPause, (160, 40))
         self.imPressP = utils.get_image_surface(os.path.join(SCRIPT_PATH, "res", "text", "pressP.png"))
         self.pressP_Img_scaled=pygame.transform.scale(self.imPressP, (100, 25))
+        self.fruit = -1
+        self.fruitEaten = False
+        self.fruitLap = 0
+        self.fruitTiles = {}
 
-
-    def StartNewGame(self):
+    def StartNewGame(self, ghosts, thisPacman, thisPath, thisLevel):
         self.score = 0
         self.lives = 3
         self.pause = False
+
     
     def GetCrossRef(self):
         crossRefData = utils.readJson("res/crossref.json")
@@ -51,26 +56,36 @@ class game:
                 tileID[element] = crossRefData[element]
                 thisID = crossRefData[element]
                 tileIDImage[thisID] = utils.get_image_surface(os.path.join(SCRIPT_PATH, "res", "tiles", element + ".gif"))
+        self.fruitTiles = [tileID['fruit-0'], tileID['fruit-1'], tileID['fruit-2'], tileID['fruit-3'], tileID['fruit-4']]
+        #print(fruitTiles)    
 
-
-    def DrawMap(self, level, screen):
+    def DrawMap(self, level, screen, time):
         self.GetCrossRef()
+        lap = (time//LAP_TIME) % 5   #each 10 sec is a lap
+        if self.fruitLap != lap:
+            self.fruitEaten = False
+        time = time % LAP_TIME #the max time will be 10 secs
+        self.fruitLap = lap
+
         for row in range(-1, self.screenTileSize[0] + 1):
             for col in range(-1, self.screenTileSize[1] + 1):
                 actualRow = row
                 actualCol = col
                 useTile = level.GetMapTile((actualRow, actualCol))
-                if useTile != 0 and useTile != tileID['door-h'] and useTile != tileID['door-v']:
+
+                if (row == 12 and col == 9):
+                    if (time > LAP_TIME*0.1 and time < LAP_TIME*0.8) and (self.fruitEaten == False) :    
+                        self.setNewFruit(level,lap+5)
+                        screen.blit(tileIDImage[self.fruit], (col * TILE_WIDTH , row * TILE_HEIGHT))                   
+    
+
+                elif useTile != 0 and useTile != tileID['door-h'] and useTile != tileID['door-v']:
                     # if this isn't a blank tile
-                    if useTile == tileID['pellet']:
-                        screen.blit(tileIDImage[useTile], (col * TILE_WIDTH ,
-                                                           row * TILE_HEIGHT))                   
-                    else:
-                        screen.blit(tileIDImage[useTile], (col * TILE_WIDTH ,
+                    screen.blit(tileIDImage[useTile], (col * TILE_WIDTH ,
                                                            row * TILE_HEIGHT))
         self.Pause(screen)
 
-#LifeCounter 
+    #LifeCounter 
     def DrawLifes(self,screen):
         for i in range(0, self.lives, 1):
             life_image = pygame.transform.scale(self.imLife, (20, 20))
@@ -133,7 +148,21 @@ class game:
         return tileID    
 
     def AddToScore(self, amount):
-        self.score += amount            
+        self.score += amount  
+        print("Score: " + str(self.score))   
 
+    def GetFruitTiles(self):
+        return self.fruitTiles
 
+    def setFruitEaten(self, level):
+        self.AddToScore(100)
+        level.SetMapTile((12, 9), 0)
+        self.fruit = -1
+        self.fruitEaten = True
+        self.AddToScore(100)
+
+    def setNewFruit(self, level, fruit):
+        level.SetMapTile((12, 9), fruit)
+        self.fruit = fruit
+        self.fruitEaten = False
 

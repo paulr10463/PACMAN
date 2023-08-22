@@ -1,6 +1,7 @@
 import utils
 import os
 import random
+import math
 
 if os.name == "nt":
     SCRIPT_PATH = os.getcwd()
@@ -157,7 +158,7 @@ class ghost:
                 self.currentPath = path.FindPath((self.nearestRow, self.nearestCol),
                                                  (player.nearestRow, player.nearestCol))
                 self.FollowNextPathWay(path, player, thisLevel, thisGame)
-
+                
     def FollowNextPathWay(self, path, player, thisLevel, thisGame):
         # print "Ghost " + str(self.id) + " rem: " + self.currentPath
         # only follow this pathway if there is a possible path found!
