@@ -85,9 +85,7 @@ class game:
             self.DrawPauseScreen(screen)
             pygame.display.flip()
             for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    running = False
-                elif event.type == pygame.KEYDOWN:
+                if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_p:
                         self.paused = not self.paused 
             
