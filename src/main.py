@@ -106,7 +106,6 @@ if option == 0:
         
         for i in range(0, 4, 1):
             ghosts[i].Draw(thisGame, thisPacman, screen, ghosts)
-        
 
         thisPacman.Draw(screen, thisGame)
         

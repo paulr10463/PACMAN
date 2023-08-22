@@ -28,11 +28,16 @@ class game:
     def __init__(self):
         self.lives = 3
         self.mode = 1
+        self.paused = False
         self.screenTileSize = (SCREEN_TILE_SIZE_HEIGHT, SCREEN_TILE_SIZE_WIDTH)
         self.screenSize = (self.screenTileSize[1] * TILE_WIDTH, self.screenTileSize[0] * TILE_HEIGHT)
         self.screenPixelOffset = (0, 0)  # offset in pixels of the screen from its nearest-tile position
         self.score = 0
         self.imLife = utils.get_image_surface(os.path.join(SCRIPT_PATH, "res", "text", "life.gif"))
+        self.imPause = utils.get_image_surface(os.path.join(SCRIPT_PATH, "res", "text", "pause.png"))
+        self.pause_Img_scaled=pygame.transform.scale(self.imPause, (160, 40))
+        self.imPressP = utils.get_image_surface(os.path.join(SCRIPT_PATH, "res", "text", "pressP.png"))
+        self.pressP_Img_scaled=pygame.transform.scale(self.imPressP, (100, 25))
         self.fruit = -1
         self.fruitEaten = False
         self.fruitLap = 0
@@ -41,7 +46,8 @@ class game:
     def StartNewGame(self, ghosts, thisPacman, thisPath, thisLevel):
         self.score = 0
         self.lives = 3
-                
+        self.pause = False
+
     
     def GetCrossRef(self):
         crossRefData = utils.readJson("res/crossref.json")
@@ -77,14 +83,33 @@ class game:
                     # if this isn't a blank tile
                     screen.blit(tileIDImage[useTile], (col * TILE_WIDTH ,
                                                            row * TILE_HEIGHT))
+        self.Pause(screen)
 
     #LifeCounter 
     def DrawLifes(self,screen):
         for i in range(0, self.lives, 1):
             life_image = pygame.transform.scale(self.imLife, (20, 20))
             screen.blit(life_image, (34 + i * 20 + 16, self.screenSize[1] - 30))
-
-    
+#PauseFunction
+    def Pause(self,screen):
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_p:
+                    self.paused = not self.paused 
+        while self.paused:
+            self.DrawPauseScreen(screen)
+            pygame.display.flip()
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_p:
+                        self.paused = not self.paused 
+            
+    def DrawPauseScreen (self,screen):
+        screen.fill((0, 0, 0))
+        screen.blit(self.pause_Img_scaled,((self.screenSize[0]-160)/2,(self.screenSize[1]-40)/2))
+        screen.blit(self.pressP_Img_scaled,((self.screenSize[0]-100)/2,(self.screenSize[1])/2+30))
     
     def ChangeDirection(self, player, thisLevel):
         if self.mode == 1 or self.mode == 8 or self.mode == 9:
