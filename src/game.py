@@ -38,9 +38,10 @@ class game:
         self.fruitLap = 0
         self.fruitTiles = {}
 
-    def StartNewGame(self):
+    def StartNewGame(self, ghosts, thisPacman, thisPath, thisLevel):
         self.score = 0
         self.lives = 3
+                
     
     def GetCrossRef(self):
         crossRefData = utils.readJson("res/crossref.json")
