@@ -5,6 +5,7 @@ import ghost
 import pygame 
 import sys
 import mainMenu
+import sound
 from pygame.locals import *
 import os 
 import path
@@ -34,6 +35,7 @@ if option == 0:
     thisLevel = maze.level()
     thisPacman = pacman.pacman()
     thisPath = path.path_finder()
+    thisSound = sound.sound()
     thisLevel.LoadLevel(thisPath)
     
     # create ghost objects

@@ -1,11 +1,12 @@
 import os
-import utils
+import utils, sound
 
 if os.name == "nt":
     SCRIPT_PATH = os.getcwd()
     
 TILE_WIDTH = TILE_HEIGHT = 24
 
+thisSound = sound.sound()
 class pacman:
     def __init__(self):
         self.x = 1* TILE_WIDTH
@@ -67,6 +68,7 @@ class pacman:
                         # ghost is normal
                         #thisGame.SetMode(2)
                         print("Crash")
+                        thisSound.snd_death.play()
 
         else:
             # we're going to hit a wall -- stop moving
@@ -141,11 +143,19 @@ class pacman:
                         # got a pellet
                         thisLevel.SetMapTile((iRow, iCol), 0)
                         thisGame.AddToScore(10)
+
+                        #Sound of pellet
+                        thisSound.snd_pellet[self.pelletSndNum].play()
+                        self.pelletSndNum = 1 - self.pelletSndNum
                     
                     elif result == thisGame.GetTileID().get('pellet-power'):
                         # got a super-pellet
                         thisLevel.SetMapTile((iRow, iCol), 0)
                         thisGame.AddToScore(50)
+
+                        #Sound of pelletPower
+                        thisSound.snd_powerpellet.play()
+                        #thisSound.SetMode(9)  #esto genera que el sonido por defecto del bg cambie
 
                     elif result == thisGame.GetTileID().get('door-h'):
                         # ran into a horizontal door

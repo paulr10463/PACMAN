@@ -3,6 +3,7 @@ import utils
 import os
 import pygame
 import sys
+import sound
 
 ASSETS_PATH = os.getcwd()+"/res/text/"
 LAP_TIME = 10000
@@ -23,7 +24,7 @@ tileIDName = {}  # gives tile name (when the ID# is known)
 tileID = {}  # gives tile ID (when the name is known)
 tileIDImage = {}  # gives tile image (when the ID# is known)
 
-
+thisSound = sound.sound()
 class game:
     def __init__(self):
         self.lives = 3
@@ -47,6 +48,8 @@ class game:
         self.score = 0
         self.lives = 3
         self.pause = False
+        #Music
+        thisSound.SetMode(0)
 
     
     def GetCrossRef(self):
@@ -159,6 +162,7 @@ class game:
         level.SetMapTile((12, 9), 0)
         self.fruit = -1
         self.fruitEaten = True
+        thisSound.snd_eatfruit.play()
         self.AddToScore(100)
 
     def setNewFruit(self, level, fruit):
