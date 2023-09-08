@@ -56,7 +56,7 @@ class pacman:
             self.y += self.velY
             
             # check for collisions with other tiles (pellets, etc)
-            self.CheckIfHitSomething((self.x, self.y), (self.nearestRow, self.nearestCol), thisLevel, thisGame)
+            self.CheckIfHitSomething((self.x, self.y), (self.nearestRow, self.nearestCol), thisLevel, thisGame, ghosts)
             
             # check for collisions with the ghosts
             for i in range(0, 4, 1):
@@ -65,14 +65,46 @@ class pacman:
 
                     if ghosts[i].state == 1:
                         # ghost is normal
-                        #thisGame.SetMode(2)
+                        # thisGame.SetMode(2)
                         print("Crash")
+                        
+                    elif ghosts[i].state == 2:
+                        # ghost is vulnerable
+                        # give them glasses
+                        # make them run
+                        thisGame.AddToScore(thisGame.ghostValue)
+                        thisGame.ghostValue = thisGame.ghostValue * 2
+                        # snd_eatgh.play()
 
+                        ghosts[i].state = 3
+                        ghosts[i].speed = ghosts[i].speed * 4
+                        # and send them to the ghost box
+                        ghosts[i].x = ghosts[i].nearestCol * TILE_WIDTH
+                        ghosts[i].y = ghosts[i].nearestRow * TILE_HEIGHT
+                        ghosts[i].currentPath = path.FindPath((ghosts[i].nearestRow, ghosts[i].nearestCol), (
+                            9 + 1, 10))
+                        ghosts[i].FollowNextPathWay(path, self, thisLevel, thisGame)
+
+                        # set game mode to brief pause after eating
+                        # thisGame.SetMode(5)
+                        
+                        
         else:
             # we're going to hit a wall -- stop moving
             self.velX = 0
             self.velY = 0
+            
+        # deal with power-pellet ghost timer
+        if thisGame.ghostTimer > 0:
+            thisGame.ghostTimer -= 1
 
+            if thisGame.ghostTimer == 0:
+                # thisGame.PlayBackgoundSound(snd_default)
+                for i in range(0, 4, 1):
+                    if ghosts[i].state == 2:
+                        ghosts[i].state = 1
+                thisGame.ghostValue = 0
+            
     # Add a method to update the points
     def UpdatePoints(self, points):
         self.points += points
@@ -124,7 +156,7 @@ class pacman:
         else:
             return False
     
-    def CheckIfHitSomething(self, playerX_playerY, row_col, thisLevel, thisGame):
+    def CheckIfHitSomething(self, playerX_playerY, row_col, thisLevel, thisGame, ghosts):
         (playerX, playerY) = playerX_playerY
         (row, col) = row_col
         for iRow in range(row - 1, row + 2, 1):
@@ -146,6 +178,13 @@ class pacman:
                         # got a super-pellet
                         thisLevel.SetMapTile((iRow, iCol), 0)
                         thisGame.AddToScore(50)
+                        thisGame.ghostValue = 200
+                        thisGame.ghostTimer = 600
+                        
+                        for i in range(0, 4, 1):
+                            if ghosts[i].state == 1:
+                                ghosts[i].state = 2
+
 
                     elif result == thisGame.GetTileID().get('door-h'):
                         # ran into a horizontal door
