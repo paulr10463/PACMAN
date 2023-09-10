@@ -1,4 +1,5 @@
 import os
+import utils, sound
 import pygame
 import time
 import utils
@@ -8,6 +9,7 @@ if os.name == "nt":
     
 TILE_WIDTH = TILE_HEIGHT = 24
 
+thisSound = sound.sound()
 class pacman:
     def __init__(self):
         self.x = 9 * TILE_WIDTH
@@ -69,6 +71,7 @@ class pacman:
 
                     if ghosts[i].state == 1:
                         # ghost is normal
+                        thisSound.SetMode(2)
                         thisGame.SetMode(2)
                         thisLevel.Restart(ghosts, path, self, thisGame)
                         thisGame.lives -= 1
@@ -77,14 +80,15 @@ class pacman:
                         pygame.display.update()
                         time.sleep(2)
                         print("Crash")
-                        
+                        thisSound.snd_death.play()
+
                     elif ghosts[i].state == 2:
                         # ghost is vulnerable
                         # give them glasses
                         # make them run
                         thisGame.AddToScore(thisGame.ghostValue)
                         thisGame.ghostValue = thisGame.ghostValue * 2
-                        # snd_eatgh.play()
+                        thisSound.snd_eatgh.play()
 
                         ghosts[i].state = 3
                         ghosts[i].speed = ghosts[i].speed * 4
@@ -96,7 +100,7 @@ class pacman:
                         ghosts[i].FollowNextPathWay(path, self, thisLevel, thisGame)
 
                         # set game mode to brief pause after eating
-                        # thisGame.SetMode(5)
+                        thisSound.SetMode(9)
                         
                         
         else:
@@ -109,7 +113,7 @@ class pacman:
             thisGame.ghostTimer -= 1
 
             if thisGame.ghostTimer == 0:
-                # thisGame.PlayBackgoundSound(snd_default)
+                thisSound.SetMode(1)
                 for i in range(0, 4, 1):
                     if ghosts[i].state == 2:
                         ghosts[i].state = 1
@@ -183,6 +187,10 @@ class pacman:
                         # got a pellet
                         thisLevel.SetMapTile((iRow, iCol), 0)
                         thisGame.AddToScore(10)
+
+                        #Sound of pellet
+                        thisSound.snd_pellet[self.pelletSndNum].play()
+                        self.pelletSndNum = 1 - self.pelletSndNum
                     
                     elif result == thisGame.GetTileID().get('pellet-power'):
                         # got a super-pellet
@@ -195,6 +203,10 @@ class pacman:
                             if ghosts[i].state == 1:
                                 ghosts[i].state = 2
 
+
+                        #Sound of pelletPower
+                        thisSound.snd_powerpellet.play()
+                        thisSound.SetMode(9)  #esto genera que el sonido por defecto del bg cambie
 
                     elif result == thisGame.GetTileID().get('door-h'):
                         # ran into a horizontal door

@@ -6,6 +6,7 @@ import ghost
 import pygame 
 import sys
 import mainMenu
+import sound
 from pygame.locals import *
 import os 
 import path
@@ -14,6 +15,8 @@ import random
 TILE_WIDTH = TILE_HEIGHT = 24
 
 os.environ['SDL_VIDEO_WINDOW_POS'] = 'centered'
+
+thisSound = sound.sound()
 
 mainMenu = mainMenu.MainMenu()
 option = mainMenu.show()
@@ -37,6 +40,7 @@ if option == 0:
     thisPath = path.path_finder()
     thisLevel.LoadLevel(thisPath)
     
+    thisSound.SetMode(1)
     # create ghost objects
     ghosts = {}
     for i in range(0, 6, 1):
