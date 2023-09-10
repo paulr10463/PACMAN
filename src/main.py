@@ -15,6 +15,8 @@ TILE_WIDTH = TILE_HEIGHT = 24
 
 os.environ['SDL_VIDEO_WINDOW_POS'] = '800,350'
 
+thisSound = sound.sound()
+
 mainMenu = mainMenu.MainMenu()
 option = mainMenu.show()
 
@@ -35,9 +37,9 @@ if option == 0:
     thisLevel = maze.level()
     thisPacman = pacman.pacman()
     thisPath = path.path_finder()
-    thisSound = sound.sound()
     thisLevel.LoadLevel(thisPath)
     
+    thisSound.SetMode(1)
     # create ghost objects
     ghosts = {}
     for i in range(0, 6, 1):
