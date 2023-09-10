@@ -4,6 +4,7 @@ import os
 import pygame
 import time
 import sys
+import sound
 
 ASSETS_PATH = os.getcwd()+"/res/text/"
 LAP_TIME = 10000
@@ -26,7 +27,7 @@ tileIDName = {}  # gives tile name (when the ID# is known)
 tileID = {}  # gives tile ID (when the name is known)
 tileIDImage = {}  # gives tile image (when the ID# is known)
 
-
+thisSound = sound.sound()
 class game:
     def __init__(self):
         self.lives = 3
@@ -56,6 +57,8 @@ class game:
         self.score = 0
         self.lives = 3
         self.pause = False
+        #Music
+        thisSound.SetMode(0)
         self.mode = 1
         thisLevel.LoadLevel(thisPath)
         thisLevel.Restart(ghosts, thisPath, player, self)
@@ -112,6 +115,7 @@ class game:
                 if event.key == pygame.K_p:
                     self.paused = not self.paused 
         while self.paused:
+            thisSound.SetMode(111)
             self.DrawPauseScreen(screen)
             pygame.display.flip()
             for event in pygame.event.get():
@@ -120,6 +124,7 @@ class game:
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_p:
                         self.paused = not self.paused 
+                        thisSound.SetMode(1)
             
     def DrawPauseScreen (self,screen):
         screen.fill((0, 0, 0))
@@ -188,6 +193,7 @@ class game:
         level.SetMapTile((12, 9), 0)
         self.fruit = -1
         self.fruitEaten = True
+        thisSound.snd_eatfruit.play()
         self.AddToScore(100)
 
     def setNewFruit(self, level, fruit):
@@ -250,3 +256,4 @@ class game:
             screen.blit(self.imReady, (self.screenSize[0] / 2 - 20, self.screenSize[1] / 2 + 12))
 
         self.DrawNumber(self.levelNum, (0, self.screenSize[1] - 20))"""
+
