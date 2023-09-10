@@ -15,7 +15,6 @@ import random
 TILE_WIDTH = TILE_HEIGHT = 24
 
 os.environ['SDL_VIDEO_WINDOW_POS'] = 'centered'
-
 thisSound = sound.sound()
 
 mainMenu = mainMenu.MainMenu()
@@ -97,6 +96,7 @@ if option == 0:
                 ghosts[i].Draw(thisGame, thisPacman, screen, ghosts)
 
             thisPacman.Draw(screen, thisGame)
-            
+            thisGame.DrawScore(screen, thisGame)
+        
         pygame.display.update()
         clock.tick(60)

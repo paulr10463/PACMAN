@@ -88,6 +88,8 @@ class pacman:
                         # make them run
                         thisGame.AddToScore(thisGame.ghostValue)
                         thisGame.ghostValue = thisGame.ghostValue * 2
+
+                        # snd_eatgh.play()
                         thisSound.snd_eatgh.play()
 
                         ghosts[i].state = 3
@@ -98,6 +100,14 @@ class pacman:
                         ghosts[i].currentPath = path.FindPath((ghosts[i].nearestRow, ghosts[i].nearestCol), (
                             9 + 1, 10))
                         ghosts[i].FollowNextPathWay(path, self, thisLevel, thisGame)
+                        pygame.display.update()
+                        thisGame.DrawNumber(thisGame.ghostValue/2,
+                            (self.x, self.y), screen, thisGame)
+                        
+                        #print(""+ str(self.x) + "-" + str(self.y))
+                        
+                        # set game mode to brief pause after eating
+                        # thisGame.SetMode(5)
 
                         # set game mode to brief pause after eating
                         thisSound.SetMode(9)
@@ -113,6 +123,7 @@ class pacman:
             thisGame.ghostTimer -= 1
 
             if thisGame.ghostTimer == 0:
+                # thisGame.PlayBackgoundSound(snd_default)
                 thisSound.SetMode(1)
                 for i in range(0, 4, 1):
                     if ghosts[i].state == 2:
@@ -207,6 +218,7 @@ class pacman:
                         #Sound of pelletPower
                         thisSound.snd_powerpellet.play()
                         thisSound.SetMode(9)  #esto genera que el sonido por defecto del bg cambie
+                        
 
                     elif result == thisGame.GetTileID().get('door-h'):
                         # ran into a horizontal door
