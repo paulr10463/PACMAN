@@ -1,5 +1,8 @@
 import os
 import utils, sound
+import pygame
+import time
+import utils
 
 if os.name == "nt":
     SCRIPT_PATH = os.getcwd()
@@ -9,8 +12,8 @@ TILE_WIDTH = TILE_HEIGHT = 24
 thisSound = sound.sound()
 class pacman:
     def __init__(self):
-        self.x = 1* TILE_WIDTH
-        self.y = 1  * TILE_HEIGHT
+        self.x = 9 * TILE_WIDTH
+        self.y = 16 * TILE_HEIGHT
         self.velX = 2
         self.velY = 0
         self.speed = 2
@@ -18,8 +21,8 @@ class pacman:
         self.nearestRow = 0
         self.nearestCol = 0
 
-        self.homeX = 0
-        self.homeY = 0
+        self.homeX = 9 * TILE_WIDTH
+        self.homeY = 16 * TILE_HEIGHT
 
         self.anim_pacmanL = {}
         self.anim_pacmanR = {}
@@ -46,7 +49,9 @@ class pacman:
 
         self.pelletSndNum = 0
 
-    def Move(self, thisLevel, thisGame, ghosts, path):
+
+
+    def Move(self, thisLevel, thisGame, ghosts, path, screen):
         self.nearestRow = int(((self.y + (TILE_WIDTH / 2)) / TILE_WIDTH))
         self.nearestCol = int(((self.x + (TILE_HEIGHT / 2)) / TILE_HEIGHT))
 
@@ -67,6 +72,13 @@ class pacman:
                     if ghosts[i].state == 1:
                         # ghost is normal
                         thisSound.SetMode(2)
+                        thisGame.SetMode(2)
+                        thisLevel.Restart(ghosts, path, self, thisGame)
+                        thisGame.lives -= 1
+                        thisGame.DrawLifes(screen)
+                        thisGame.SetMode(1)
+                        pygame.display.update()
+                        time.sleep(2)
                         print("Crash")
                         thisSound.snd_death.play()
 

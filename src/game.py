@@ -2,6 +2,7 @@
 import utils
 import os
 import pygame
+import time
 import sys
 import sound
 
@@ -37,6 +38,7 @@ class game:
         self.screenPixelOffset = (0, 0)  # offset in pixels of the screen from its nearest-tile position
         self.score = 0
         self.imLife = utils.get_image_surface(os.path.join(SCRIPT_PATH, "res", "text", "life.gif"))
+        self.imGameOver = utils.get_image_surface(os.path.join(SCRIPT_PATH, "res", "text", "gameover.gif"))
         self.imPause = utils.get_image_surface(os.path.join(SCRIPT_PATH, "res", "text", "pause.png"))
         self.pause_Img_scaled=pygame.transform.scale(self.imPause, (160, 40))
         self.imPressP = utils.get_image_surface(os.path.join(SCRIPT_PATH, "res", "text", "pressP.png"))
@@ -46,12 +48,15 @@ class game:
         self.fruitLap = 0
         self.fruitTiles = {}
 
-    def StartNewGame(self, ghosts, thisPacman, thisPath, thisLevel):
+    def StartNewGame(self, thisPath, thisLevel, player, ghosts):
         self.score = 0
         self.lives = 3
         self.pause = False
         #Music
         thisSound.SetMode(0)
+        self.mode = 1
+        thisLevel.LoadLevel(thisPath)
+        thisLevel.Restart(ghosts, thisPath, player, self)
 
     
     def GetCrossRef(self):
@@ -89,14 +94,17 @@ class game:
                     screen.blit(tileIDImage[useTile], (col * TILE_WIDTH ,
                                                            row * TILE_HEIGHT))
         self.Pause(screen)
+        
+        self.GameOver(screen)
 
     #LifeCounter 
-    def DrawLifes(self,screen):
+    def DrawLifes(self, screen):
         for i in range(0, self.lives, 1):
             life_image = pygame.transform.scale(self.imLife, (20, 20))
             screen.blit(life_image, (34 + i * 20 + 16, self.screenSize[1] - 30))
-#PauseFunction
-    def Pause(self,screen):
+          
+    #PauseFunction
+    def Pause(self, screen):
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_p:
@@ -118,7 +126,17 @@ class game:
         screen.blit(self.pause_Img_scaled,((self.screenSize[0]-160)/2,(self.screenSize[1]-40)/2))
         screen.blit(self.pressP_Img_scaled,((self.screenSize[0]-100)/2,(self.screenSize[1])/2+30))
     
-    def ChangeDirection(self, player, thisLevel):
+    def GameOver(self, screen):
+        if self.lives == 0:
+            self.DrawGameOver(screen)
+            self.mode = 3
+    
+    def DrawGameOver(self, screen):
+        screen.fill((0, 0, 0))
+        screen.blit(self.imGameOver, ((self.screenSize[0]-90)/2,(self.screenSize[1]-40)/2))
+        
+    
+    def ChangeDirection(self, player, thisLevel, path, ghosts):
         if self.mode == 1 or self.mode == 8 or self.mode == 9:
             if pygame.key.get_pressed()[pygame.K_RIGHT]:
                 if not (player.velX == player.speed and player.velY == 0) and not player.CheckIfHitWall(
@@ -149,7 +167,8 @@ class game:
 
         elif self.mode == 3:
             if pygame.key.get_pressed()[pygame.K_RETURN]:
-                self.StartNewGame()
+                self.StartNewGame(path, thisLevel, player, ghosts)
+                print("New Game")
        
     def GetTileID(self):
         return tileID   

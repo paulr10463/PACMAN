@@ -35,8 +35,8 @@ class ghost:
         # 3 = spectacles
         self.state = 1
 
-        self.homeX = 0
-        self.homeY = 0
+        self.homeX = 10 * TILE_HEIGHT
+        self.homeY = 10 * TILE_WIDTH
 
         self.currentPath = ""
 
@@ -55,6 +55,27 @@ class ghost:
 
         self.animFrame = 1
         self.animDelay = 0
+
+    def RestartGhost(self, level, thisGame, path, thisPacman):
+        # move ghosts back to home
+        self.x = self.homeX
+        self.y = self.homeY
+        self.velX = 0
+        self.velY = 0
+        self.state = 1
+        self.speed = 2
+        self.Move(path, thisPacman, thisGame, level)
+
+        # give each ghost a path to a random spot (containing a pellet)
+        (randRow, randCol) = (0, 0)
+
+        while not level.GetMapTile((randRow, randCol)) == thisGame.GetTileID().get('pellet') or (randRow, randCol) == (0, 0):
+            randRow = random.randint(1, level.lvlHeight - 2)
+            randCol = random.randint(1, level.lvlWidth - 2)
+
+        # print "Ghost " + str(i) + " headed towards " + str((randRow, randCol))
+        self.currentPath = path.FindPath((self.nearestRow, self.nearestCol), (randRow, randCol))
+        self.FollowNextPathWay(path, thisPacman, level, thisGame) 
 
     def Draw(self, thisGame, player, screen, ghosts):
         global rect_list

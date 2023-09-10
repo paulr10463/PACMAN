@@ -1,4 +1,5 @@
 import game
+import time
 import maze
 import pacman
 import ghost
@@ -13,7 +14,7 @@ import random
 
 TILE_WIDTH = TILE_HEIGHT = 24
 
-os.environ['SDL_VIDEO_WINDOW_POS'] = '800,350'
+os.environ['SDL_VIDEO_WINDOW_POS'] = 'centered'
 
 thisSound = sound.sound()
 
@@ -63,55 +64,39 @@ if option == 0:
     while True:
         CheckIfCloseButton(pygame.event.get())
         screen.fill((0, 0, 0))  # Fill the screen with black
-
-        thisGame.ChangeDirection(thisPacman, thisLevel)
+        thisGame.ChangeDirection(thisPacman, thisLevel, thisPath, ghosts)
         thisGame.DrawMap(thisLevel, screen, pygame.time.get_ticks())
         thisGame.DrawLifes(screen)
-        thisPacman.Move(thisLevel, thisGame, ghosts, thisPath)
-        ##ghosts[0].Move(thisPath, thisPacman, thisGame, thisLevel)   
-        ##ghosts[2].Move(thisPath, thisPacman, thisGame, thisLevel)  
         
+        if thisGame.mode == 1:
+            thisPacman.Move(thisLevel, thisGame, ghosts, thisPath, screen)
+            ##ghosts[0].Move(thisPath, thisPacman, thisGame, thisLevel)   
+            ##ghosts[2].Move(thisPath, thisPacman, thisGame, thisLevel)  
         
-        for i in range(0, 4, 1):
-            ghosts[i].Move(thisPath, thisPacman, thisGame, thisLevel)
-
-            (randRow, randCol) = (0, 0)
-            if pygame.time.get_ticks() < 250:
-                if i == 0:  # Rojo
-                    randRow = 1  # Esquina superior izquierda
-                    randCol = 1
-                elif i == 1:  # Rosa
-                    randRow = 1  # Mover hacia arriba y luego a la izquierda
-                    randCol = thisLevel.lvlWidth - 2
-                elif i == 2:  # Rosa
-                    randRow = thisLevel.lvlHeight - 3  # Esquina superior derecha
-                    randCol = 1
-                elif i == 3:  # Celeste
-                    randRow = thisLevel.lvlHeight - 3  # Esquina inferior derecha
-                    randCol = thisLevel.lvlWidth - 2
-                
-                ghosts[i].currentPath = thisPath.FindPath((ghosts[i].nearestRow, ghosts[i].nearestCol), (randRow, randCol))
-                ghosts[i].FollowNextPathWay(thisPath, thisPacman, thisLevel, thisGame)
-
-
-            """if(pygame.time.get_ticks() < 250):
-                print("Xd")
-                # give each ghost a path to a random spot (containing a pellet)
+            for i in range(0, 4, 1):
+                ghosts[i].Move(thisPath, thisPacman, thisGame, thisLevel)
                 (randRow, randCol) = (0, 0)
+                if pygame.time.get_ticks() < 250:
+                    if i == 0:  # Rojo
+                        randRow = 1  # Esquina superior izquierda
+                        randCol = 1
+                    elif i == 1:  # Rosa
+                        randRow = 1  # Mover hacia arriba y luego a la izquierda
+                        randCol = thisLevel.lvlWidth - 2
+                    elif i == 2:  # Rosa
+                        randRow = thisLevel.lvlHeight - 3  # Esquina superior derecha
+                        randCol = 1
+                    elif i == 3:  # Celeste
+                        randRow = thisLevel.lvlHeight - 3  # Esquina inferior derecha
+                        randCol = thisLevel.lvlWidth - 2
+                    
+                    ghosts[i].currentPath = thisPath.FindPath((ghosts[i].nearestRow, ghosts[i].nearestCol), (randRow, randCol))
+                    ghosts[i].FollowNextPathWay(thisPath, thisPacman, thisLevel, thisGame)
+                            
+            for i in range(0, 4, 1):
+                ghosts[i].Draw(thisGame, thisPacman, screen, ghosts)
 
-                while not thisLevel.GetMapTile((randRow, randCol)) == thisGame.GetTileID()['pellet'] or (randRow, randCol) == (0, 0):
-                    randRow = random.randint(1, thisLevel.lvlHeight - 2)
-                    randCol = random.randint(1, thisLevel.lvlWidth - 2)
-
-                # print "Ghost " + str(i) + " headed towards " + str((randRow, randCol))
-                ghosts[i].currentPath = thisPath.FindPath((ghosts[i].nearestRow, ghosts[i].nearestCol), (randRow, randCol))
-                ghosts[i].FollowNextPathWay(thisPath, thisPacman, thisLevel, thisGame)"""
+            thisPacman.Draw(screen, thisGame)
             
-        
-        for i in range(0, 4, 1):
-            ghosts[i].Draw(thisGame, thisPacman, screen, ghosts)
-
-        thisPacman.Draw(screen, thisGame)
-        
         pygame.display.update()
         clock.tick(60)
