@@ -1,4 +1,5 @@
 import os
+import random
 
 TILE_WIDTH = TILE_HEIGHT = 24
 LEVEL_WIDTH = 19
@@ -69,6 +70,18 @@ class level:
         else:
             return False
 
+    def Restart(self, ghosts, path, player, thisGame):
+        # move ghosts back to home
+        for i in range(0, 4, 1):
+            ghosts[i].RestartGhost(self, thisGame, path, player)
+            
+        player.x = player.homeX
+        player.y = player.homeY
+        player.velX = 0
+        player.velY = 0
+
+        player.anim_pacmanCurrent = player.anim_pacmanS
+        player.animFrame = 3
 
     
 

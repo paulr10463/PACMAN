@@ -2,6 +2,7 @@
 import utils
 import os
 import pygame
+import time
 import sys
 
 ASSETS_PATH = os.getcwd()+"/res/text/"
@@ -36,6 +37,7 @@ class game:
         self.screenPixelOffset = (0, 0)  # offset in pixels of the screen from its nearest-tile position
         self.score = 0
         self.imLife = utils.get_image_surface(os.path.join(SCRIPT_PATH, "res", "text", "life.gif"))
+        self.imGameOver = utils.get_image_surface(os.path.join(SCRIPT_PATH, "res", "text", "gameover.gif"))
         self.imPause = utils.get_image_surface(os.path.join(SCRIPT_PATH, "res", "text", "pause.png"))
         self.pause_Img_scaled=pygame.transform.scale(self.imPause, (160, 40))
         self.imPressP = utils.get_image_surface(os.path.join(SCRIPT_PATH, "res", "text", "pressP.png"))
@@ -45,10 +47,11 @@ class game:
         self.fruitLap = 0
         self.fruitTiles = {}
 
-    def StartNewGame(self, ghosts, thisPacman, thisPath, thisLevel):
+    def StartNewGame(self, thisPath, thisLevel):
         self.score = 0
         self.lives = 3
         self.pause = False
+        thisLevel.LoadLevel(thisPath)
 
     
     def GetCrossRef(self):
@@ -61,7 +64,7 @@ class game:
         self.fruitTiles = [tileID['fruit-0'], tileID['fruit-1'], tileID['fruit-2'], tileID['fruit-3'], tileID['fruit-4']]
         #print(fruitTiles)    
 
-    def DrawMap(self, level, screen, time):
+    def DrawMap(self, level, screen, time, path):
         self.GetCrossRef()
         lap = (time//LAP_TIME) % 5   #each 10 sec is a lap
         if self.fruitLap != lap:
@@ -86,14 +89,18 @@ class game:
                     screen.blit(tileIDImage[useTile], (col * TILE_WIDTH ,
                                                            row * TILE_HEIGHT))
         self.Pause(screen)
+        
+        if(self.lives == 0):
+            self.GameOver(screen, path, level)
 
     #LifeCounter 
-    def DrawLifes(self,screen):
+    def DrawLifes(self, screen):
         for i in range(0, self.lives, 1):
             life_image = pygame.transform.scale(self.imLife, (20, 20))
             screen.blit(life_image, (34 + i * 20 + 16, self.screenSize[1] - 30))
-#PauseFunction
-    def Pause(self,screen):
+          
+    #PauseFunction
+    def Pause(self, screen):
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_p:
@@ -112,6 +119,18 @@ class game:
         screen.fill((0, 0, 0))
         screen.blit(self.pause_Img_scaled,((self.screenSize[0]-160)/2,(self.screenSize[1]-40)/2))
         screen.blit(self.pressP_Img_scaled,((self.screenSize[0]-100)/2,(self.screenSize[1])/2+30))
+    
+    def GameOver(self, screen, thisPath, thisLevel):
+        self.DrawGameOver(screen)
+        pygame.display.flip()
+        time.sleep(2)
+        self.mode = 1
+        self.StartNewGame(thisPath, thisLevel)
+    
+    def DrawGameOver(self, screen):
+        screen.fill((0, 0, 0))
+        screen.blit(self.imGameOver, ((self.screenSize[0]-80)/2,(self.screenSize[1]-40)/2))
+        
     
     def ChangeDirection(self, player, thisLevel):
         if self.mode == 1 or self.mode == 8 or self.mode == 9:

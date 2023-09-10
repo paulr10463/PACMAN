@@ -1,4 +1,5 @@
 import game
+import time
 import maze
 import pacman
 import ghost
@@ -12,7 +13,7 @@ import random
 
 TILE_WIDTH = TILE_HEIGHT = 24
 
-os.environ['SDL_VIDEO_WINDOW_POS'] = '800,350'
+os.environ['SDL_VIDEO_WINDOW_POS'] = 'centered'
 
 mainMenu = mainMenu.MainMenu()
 option = mainMenu.show()
@@ -61,9 +62,9 @@ if option == 0:
         screen.fill((0, 0, 0))  # Fill the screen with black
 
         thisGame.ChangeDirection(thisPacman, thisLevel)
-        thisGame.DrawMap(thisLevel, screen, pygame.time.get_ticks())
+        thisGame.DrawMap(thisLevel, screen, pygame.time.get_ticks(), thisPath)
         thisGame.DrawLifes(screen)
-        thisPacman.Move(thisLevel, thisGame, ghosts, thisPath)
+        thisPacman.Move(thisLevel, thisGame, ghosts, thisPath, screen)
         ##ghosts[0].Move(thisPath, thisPacman, thisGame, thisLevel)   
         ##ghosts[2].Move(thisPath, thisPacman, thisGame, thisLevel)  
         
@@ -88,22 +89,7 @@ if option == 0:
                 
                 ghosts[i].currentPath = thisPath.FindPath((ghosts[i].nearestRow, ghosts[i].nearestCol), (randRow, randCol))
                 ghosts[i].FollowNextPathWay(thisPath, thisPacman, thisLevel, thisGame)
-
-
-            """if(pygame.time.get_ticks() < 250):
-                print("Xd")
-                # give each ghost a path to a random spot (containing a pellet)
-                (randRow, randCol) = (0, 0)
-
-                while not thisLevel.GetMapTile((randRow, randCol)) == thisGame.GetTileID()['pellet'] or (randRow, randCol) == (0, 0):
-                    randRow = random.randint(1, thisLevel.lvlHeight - 2)
-                    randCol = random.randint(1, thisLevel.lvlWidth - 2)
-
-                # print "Ghost " + str(i) + " headed towards " + str((randRow, randCol))
-                ghosts[i].currentPath = thisPath.FindPath((ghosts[i].nearestRow, ghosts[i].nearestCol), (randRow, randCol))
-                ghosts[i].FollowNextPathWay(thisPath, thisPacman, thisLevel, thisGame)"""
-            
-        
+                        
         for i in range(0, 4, 1):
             ghosts[i].Draw(thisGame, thisPacman, screen, ghosts)
 
