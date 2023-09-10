@@ -47,11 +47,13 @@ class game:
         self.fruitLap = 0
         self.fruitTiles = {}
 
-    def StartNewGame(self, thisPath, thisLevel):
+    def StartNewGame(self, thisPath, thisLevel, player, ghosts):
         self.score = 0
         self.lives = 3
         self.pause = False
+        self.mode = 1
         thisLevel.LoadLevel(thisPath)
+        thisLevel.Restart(ghosts, thisPath, player, self)
 
     
     def GetCrossRef(self):
@@ -64,7 +66,7 @@ class game:
         self.fruitTiles = [tileID['fruit-0'], tileID['fruit-1'], tileID['fruit-2'], tileID['fruit-3'], tileID['fruit-4']]
         #print(fruitTiles)    
 
-    def DrawMap(self, level, screen, time, path):
+    def DrawMap(self, level, screen, time):
         self.GetCrossRef()
         lap = (time//LAP_TIME) % 5   #each 10 sec is a lap
         if self.fruitLap != lap:
@@ -90,8 +92,7 @@ class game:
                                                            row * TILE_HEIGHT))
         self.Pause(screen)
         
-        if(self.lives == 0):
-            self.GameOver(screen, path, level)
+        self.GameOver(screen)
 
     #LifeCounter 
     def DrawLifes(self, screen):
@@ -120,19 +121,17 @@ class game:
         screen.blit(self.pause_Img_scaled,((self.screenSize[0]-160)/2,(self.screenSize[1]-40)/2))
         screen.blit(self.pressP_Img_scaled,((self.screenSize[0]-100)/2,(self.screenSize[1])/2+30))
     
-    def GameOver(self, screen, thisPath, thisLevel):
-        self.DrawGameOver(screen)
-        pygame.display.flip()
-        time.sleep(2)
-        self.mode = 1
-        self.StartNewGame(thisPath, thisLevel)
+    def GameOver(self, screen):
+        if self.lives == 0:
+            self.DrawGameOver(screen)
+            self.mode = 3
     
     def DrawGameOver(self, screen):
         screen.fill((0, 0, 0))
-        screen.blit(self.imGameOver, ((self.screenSize[0]-80)/2,(self.screenSize[1]-40)/2))
+        screen.blit(self.imGameOver, ((self.screenSize[0]-90)/2,(self.screenSize[1]-40)/2))
         
     
-    def ChangeDirection(self, player, thisLevel):
+    def ChangeDirection(self, player, thisLevel, path, ghosts):
         if self.mode == 1 or self.mode == 8 or self.mode == 9:
             if pygame.key.get_pressed()[pygame.K_RIGHT]:
                 if not (player.velX == player.speed and player.velY == 0) and not player.CheckIfHitWall(
@@ -163,7 +162,8 @@ class game:
 
         elif self.mode == 3:
             if pygame.key.get_pressed()[pygame.K_RETURN]:
-                self.StartNewGame()
+                self.StartNewGame(path, thisLevel, player, ghosts)
+                print("New Game")
        
     def GetTileID(self):
         return tileID   
