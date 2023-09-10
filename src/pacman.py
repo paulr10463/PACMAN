@@ -66,7 +66,7 @@ class pacman:
 
                     if ghosts[i].state == 1:
                         # ghost is normal
-                        # thisGame.SetMode(2)
+                        thisSound.SetMode(2)
                         print("Crash")
                         thisSound.snd_death.play()
 
@@ -76,7 +76,7 @@ class pacman:
                         # make them run
                         thisGame.AddToScore(thisGame.ghostValue)
                         thisGame.ghostValue = thisGame.ghostValue * 2
-                        # snd_eatgh.play()
+                        thisSound.snd_eatgh.play()
 
                         ghosts[i].state = 3
                         ghosts[i].speed = ghosts[i].speed * 4
@@ -88,7 +88,7 @@ class pacman:
                         ghosts[i].FollowNextPathWay(path, self, thisLevel, thisGame)
 
                         # set game mode to brief pause after eating
-                        # thisGame.SetMode(5)
+                        thisSound.SetMode(9)
                         
                         
         else:
@@ -101,7 +101,7 @@ class pacman:
             thisGame.ghostTimer -= 1
 
             if thisGame.ghostTimer == 0:
-                # thisGame.PlayBackgoundSound(snd_default)
+                thisSound.SetMode(1)
                 for i in range(0, 4, 1):
                     if ghosts[i].state == 2:
                         ghosts[i].state = 1
@@ -194,7 +194,7 @@ class pacman:
 
                         #Sound of pelletPower
                         thisSound.snd_powerpellet.play()
-                        #thisSound.SetMode(9)  #esto genera que el sonido por defecto del bg cambie
+                        thisSound.SetMode(9)  #esto genera que el sonido por defecto del bg cambie
 
                     elif result == thisGame.GetTileID().get('door-h'):
                         # ran into a horizontal door

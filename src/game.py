@@ -102,6 +102,7 @@ class game:
                 if event.key == pygame.K_p:
                     self.paused = not self.paused 
         while self.paused:
+            thisSound.SetMode(111)
             self.DrawPauseScreen(screen)
             pygame.display.flip()
             for event in pygame.event.get():
@@ -110,6 +111,7 @@ class game:
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_p:
                         self.paused = not self.paused 
+                        thisSound.SetMode(1)
             
     def DrawPauseScreen (self,screen):
         screen.fill((0, 0, 0))
