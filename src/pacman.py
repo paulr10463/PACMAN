@@ -94,7 +94,12 @@ class pacman:
                         ghosts[i].currentPath = path.FindPath((ghosts[i].nearestRow, ghosts[i].nearestCol), (
                             9 + 1, 10))
                         ghosts[i].FollowNextPathWay(path, self, thisLevel, thisGame)
-
+                        pygame.display.update()
+                        thisGame.DrawNumber(thisGame.ghostValue/2,
+                            (self.x, self.y), screen, thisGame)
+                        
+                        #print(""+ str(self.x) + "-" + str(self.y))
+                        
                         # set game mode to brief pause after eating
                         # thisGame.SetMode(5)
                         

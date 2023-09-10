@@ -14,6 +14,8 @@ SCREEN_TILE_SIZE_HEIGHT = 24
 SCREEN_TILE_SIZE_WIDTH = 20
 TILE_WIDTH = TILE_HEIGHT = 24
 
+SCORE_COLWIDTH = 13  # width of each character
+
 # new constants for the score's position
 SCORE_XOFFSET = 50  # pixels from left edge
 SCORE_YOFFSET = 34  # pixels from bottom edge (to top of score)
@@ -46,6 +48,9 @@ class game:
         self.fruitEaten = False
         self.fruitLap = 0
         self.fruitTiles = {}
+        self.digit = {}
+        for i in range(0, 10, 1):
+            self.digit[i] = utils.get_image_surface(os.path.join(SCRIPT_PATH, "res", "text", str(i) + ".gif"))
 
     def StartNewGame(self, thisPath, thisLevel, player, ghosts):
         self.score = 0
@@ -210,3 +215,38 @@ class game:
             channel_backgound.stop()
         """
 
+    def DrawNumber(self, number, x_y, screen, thisGame):
+        global rect_list
+        (x, y) = x_y
+        # print(x, y, "---")
+        strNumber = str(number)
+
+        for i in range(0, len(str(number)), 1):
+            if strNumber[i] == '.':
+                break
+            iDigit = int(strNumber[i])
+            
+            screen.blit(self.digit[iDigit], (x + i * SCORE_COLWIDTH, y))
+        
+        pygame.display.update()  # Actualiza la pantalla después de dibujar
+
+        if y < self.screenSize[1] - SCORE_YOFFSET:
+            print(x, y, "---")
+            # Puedes agregar un pequeño retraso si es necesario
+            pygame.time.delay(500)  # Retraso de 500 milisegundos (0.5 segundos)
+
+
+    def DrawScore(self, screen, thisGame):
+        #global rect_list
+        self.DrawNumber(self.score, (SCORE_XOFFSET + 80, self.screenSize[1] - SCORE_YOFFSET + 5), screen, thisGame)
+        
+        """for i in range(0, self.lives, 1):
+            screen.blit(self.imLife, (34 + i * 10 + 16, self.screenSize[1] - 18))
+
+        if self.mode == 3:
+            screen.blit(self.imGameOver, (self.screenSize[0] / 2 - (self.imGameOver.get_width() / 2),
+                                          self.screenSize[1] / 2 - (self.imGameOver.get_height() / 2)))
+        elif self.mode == 0 or self.mode == 4:
+            screen.blit(self.imReady, (self.screenSize[0] / 2 - 20, self.screenSize[1] / 2 + 12))
+
+        self.DrawNumber(self.levelNum, (0, self.screenSize[1] - 20))"""

@@ -94,6 +94,7 @@ if option == 0:
                 ghosts[i].Draw(thisGame, thisPacman, screen, ghosts)
 
             thisPacman.Draw(screen, thisGame)
-            
+            thisGame.DrawScore(screen, thisGame)
+        
         pygame.display.update()
         clock.tick(60)
