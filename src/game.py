@@ -29,6 +29,8 @@ class game:
     def __init__(self):
         self.lives = 3
         self.mode = 1
+        self.ghostValue = 0
+        self.ghostTimer = 0
         self.paused = False
         self.screenTileSize = (SCREEN_TILE_SIZE_HEIGHT, SCREEN_TILE_SIZE_WIDTH)
         self.screenSize = (self.screenTileSize[1] * TILE_WIDTH, self.screenTileSize[0] * TILE_HEIGHT)
@@ -148,7 +150,10 @@ class game:
                 self.StartNewGame()
        
     def GetTileID(self):
-        return tileID    
+        return tileID   
+    
+    def GetTileIDImage(self):
+        return tileIDImage
 
     def AddToScore(self, amount):
         self.score += amount  
@@ -169,4 +174,24 @@ class game:
         level.SetMapTile((12, 9), fruit)
         self.fruit = fruit
         self.fruitEaten = False
+
+    def SetMode(self, newMode):
+        self.mode = newMode
+        # self.modeTimer = 0
+        """	
+        if newMode == 0:
+            self.PlayBackgoundSound(snd_levelintro)
+        elif newMode == 1:
+            self.PlayBackgoundSound(snd_default)
+        elif newMode == 2:
+            self.PlayBackgoundSound(snd_death)
+        elif newMode == 8:
+            self.PlayBackgoundSound(snd_gh2gohome)
+        elif newMode == 9:
+            self.PlayBackgoundSound(snd_extrapac)
+        elif newMode == 11:
+            self.PlayBackgoundSound(snd_love)
+        else:
+            channel_backgound.stop()
+        """
 

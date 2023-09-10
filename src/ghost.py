@@ -100,21 +100,21 @@ class ghost:
             if thisGame.ghostTimer > 100:
                 # blue
                 screen.blit(ghosts[4].anim[self.animFrame],
-                            (self.x - thisGame.screenPixelPos[0], self.y - thisGame.screenPixelPos[1]))
+                            (self.x - thisGame.screenPixelOffset[0], self.y - thisGame.screenPixelOffset[1]))
             else:
                 # blue/white flashing
                 tempTimerI = int(thisGame.ghostTimer / 10)
                 if tempTimerI == 1 or tempTimerI == 3 or tempTimerI == 5 or tempTimerI == 7 or tempTimerI == 9:
                     screen.blit(ghosts[5].anim[self.animFrame],
-                                (self.x - thisGame.screenPixelPos[0], self.y - thisGame.screenPixelPos[1]))
+                                (self.x - thisGame.screenPixelOffset[0], self.y - thisGame.screenPixelOffset[1]))
                 else:
                     screen.blit(ghosts[4].anim[self.animFrame],
-                                (self.x - thisGame.screenPixelPos[0], self.y - thisGame.screenPixelPos[1]))
+                                (self.x - thisGame.screenPixelOffset[0], self.y - thisGame.screenPixelOffset[1]))
 
         elif self.state == 3:
             # draw glasses
-            screen.blit(thisGame.GetTileIDImage[thisGame.GetTileID['glasses']],
-                        (self.x - thisGame.screenPixelPos[0], self.y - thisGame.screenPixelPos[1]))
+            screen.blit(thisGame.GetTileIDImage().get(thisGame.GetTileID().get('glasses')),
+                        (self.x - thisGame.screenPixelOffset[0], self.y - thisGame.screenPixelOffset[1]))
 
         if thisGame.mode == 6 or thisGame.mode == 7:
             # don't animate ghost if the level is complete
@@ -190,7 +190,7 @@ class ghost:
                     # give ghost a path to a random spot (containing a pellet)
                     (randRow, randCol) = (0, 0)
 
-                    while not thisLevel.GetMapTile((randRow, randCol)) == thisGame.tileID['pellet'] or (randRow, randCol) == (
+                    while not thisLevel.GetMapTile((randRow, randCol)) == thisGame.GetTileID().get('pellet') or (randRow, randCol) == (
                             0, 0):
                         randRow = random.randint(1, thisLevel.lvlHeight - 2)
                         randCol = random.randint(1, thisLevel.lvlWidth - 2)

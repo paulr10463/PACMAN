@@ -76,7 +76,7 @@ if option == 0:
             ghosts[i].Move(thisPath, thisPacman, thisGame, thisLevel)
 
             (randRow, randCol) = (0, 0)
-            if pygame.time.get_ticks() < 450:
+            if pygame.time.get_ticks() < 250:
                 if i == 0:  # Rojo
                     randRow = 1  # Esquina superior izquierda
                     randCol = 1
