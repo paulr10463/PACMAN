@@ -33,9 +33,9 @@ class MainMenu:
 
     ###### Función para manejar las teclas presionadas ######
         # Check the current position and perform actions
-        # 1 -> Play
-        # 2 -> Scores
-        # 3 -> Exit
+        # 0 -> Play
+        # 1 -> Scores
+        # 2 -> Exit
         if event.keysym == 'Return':
             if self.rectangle_position == 0:
                 self.option = 0
