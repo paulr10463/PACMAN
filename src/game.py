@@ -102,6 +102,23 @@ class game:
                                                            row * TILE_HEIGHT))
         self.Pause(screen)  
         self.GameOver(screen)
+        if self.HasPlayerCompletedMaze(level):
+            self.IncrementLives()  # Increment lives if maze is completed
+            
+
+    def HasPlayerCompletedMaze(self, level):
+        # Loop through the entire map and check if there are any remaining pellets
+        for row in range(level.lvlHeight):
+            for col in range(level.lvlWidth):
+                if level.GetMapTile((row, col)) == tileID['pellet']:
+                    return False  # If there is at least one pellet remaining, maze is not completed
+
+        return True  # If no pellets are remaining, maze is completed
+    
+    # RF 13 : Incrementar la vida 
+    def IncrementLives(self):
+        if self.lives < 3:
+            self.lives += 1 
 
     #LifeCounter 
     def DrawLifes(self, screen):
