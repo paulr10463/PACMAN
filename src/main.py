@@ -70,7 +70,7 @@ if option == 0:
         CheckIfCloseButton(pygame.event.get())
         screen.fill((0, 0, 0))  # Fill the screen with black
         thisGame.ChangeDirection(thisPacman, thisLevel, thisPath, ghosts)
-        thisGame.DrawMap(thisLevel, screen, pygame.time.get_ticks())
+        thisGame.DrawMap(thisLevel, screen, pygame.time.get_ticks(), ghosts, thisGame, thisPath, thisPacman)
         thisGame.DrawLifes(screen)
 
         if thisGame.mode == 1:
