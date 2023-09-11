@@ -125,7 +125,7 @@ class game:
             level.LoadLevel(path)
             pygame.display.update()
             # self.ghostsSpeed += 0.1
-            thisSound.SetMode(111)
+            self.soundInstance.SetMode(111)
             for i in range(0, 4, 1):
                 ghosts[i].RestartGhost(level, self, path, thisPacman)
                 # ghosts[i].speed += self.ghostsSpeed
