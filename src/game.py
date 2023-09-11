@@ -173,7 +173,10 @@ class game:
 
     def AddToScore(self, amount):
         self.score += amount  
-        print("Score: " + str(self.score))   
+        print("Score: " + str(self.score))
+        if self.score >= 7000:
+            self.increase_player_lives()
+            self.score = 0   
 
     def GetFruitTiles(self):
         return self.fruitTiles
@@ -192,21 +195,8 @@ class game:
 
     def SetMode(self, newMode):
         self.mode = newMode
-        # self.modeTimer = 0
-        """	
-        if newMode == 0:
-            self.PlayBackgoundSound(snd_levelintro)
-        elif newMode == 1:
-            self.PlayBackgoundSound(snd_default)
-        elif newMode == 2:
-            self.PlayBackgoundSound(snd_death)
-        elif newMode == 8:
-            self.PlayBackgoundSound(snd_gh2gohome)
-        elif newMode == 9:
-            self.PlayBackgoundSound(snd_extrapac)
-        elif newMode == 11:
-            self.PlayBackgoundSound(snd_love)
-        else:
-            channel_backgound.stop()
-        """
+        
+    def increase_player_lives(self):
+        self.lives += 1
 
+    
