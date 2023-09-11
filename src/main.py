@@ -38,8 +38,6 @@ if option == 0:
     thisPacman = pacman.pacman()
     thisPath = path.path_finder()
     thisLevel.LoadLevel(thisPath)
-    
-    thisSound.SetMode(1)
     # create ghost objects
     ghosts = {}
     for i in range(0, 6, 1):
@@ -70,8 +68,8 @@ if option == 0:
         if thisGame.mode == 1:
             thisPacman.Move(thisLevel, thisGame, ghosts, thisPath, screen)
             ##ghosts[0].Move(thisPath, thisPacman, thisGame, thisLevel)   
-            ##ghosts[2].Move(thisPath, thisPacman, thisGame, thisLevel)  
-        
+            ##ghosts[2].Move(thisPath, thisPacman, thisGame, thisLevel)
+             
             for i in range(0, 4, 1):
                 ghosts[i].Move(thisPath, thisPacman, thisGame, thisLevel)
                 (randRow, randCol) = (0, 0)
@@ -88,12 +86,12 @@ if option == 0:
                     elif i == 3:  # Celeste
                         randRow = thisLevel.lvlHeight - 3  # Esquina inferior derecha
                         randCol = thisLevel.lvlWidth - 2
-                    
                     ghosts[i].currentPath = thisPath.FindPath((ghosts[i].nearestRow, ghosts[i].nearestCol), (randRow, randCol))
                     ghosts[i].FollowNextPathWay(thisPath, thisPacman, thisLevel, thisGame)
-                            
+
+            
             for i in range(0, 4, 1):
-                ghosts[i].Draw(thisGame, thisPacman, screen, ghosts)
+                ghosts[i].Draw(thisGame, thisPacman, screen, ghosts)  
 
             thisPacman.Draw(screen, thisGame)
             thisGame.DrawScore(screen, thisGame)

@@ -71,16 +71,15 @@ class pacman:
 
                     if ghosts[i].state == 1:
                         # ghost is normal
-                        thisSound.SetMode(2)
                         thisGame.SetMode(2)
                         thisLevel.Restart(ghosts, path, self, thisGame)
                         thisGame.lives -= 1
                         thisGame.DrawLifes(screen)
                         thisGame.SetMode(1)
                         pygame.display.update()
-                        time.sleep(2)
                         print("Crash")
                         thisSound.snd_death.play()
+                        time.sleep(2)
 
                     elif ghosts[i].state == 2:
                         # ghost is vulnerable
@@ -217,7 +216,7 @@ class pacman:
 
                         #Sound of pelletPower
                         thisSound.snd_powerpellet.play()
-                        thisSound.SetMode(9)  #esto genera que el sonido por defecto del bg cambie
+                        thisSound.SetMode(9) #esto genera que el sonido por defecto del bg cambie
                         
 
                     elif result == thisGame.GetTileID().get('door-h'):

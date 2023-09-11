@@ -58,7 +58,9 @@ class game:
         self.lives = 3
         self.pause = False
         #Music
-        thisSound.SetMode(0)
+        thisSound.SetMode(1)
+        thisSound.snd_levelintro.play()
+        time.sleep(4)
         self.mode = 1
         thisLevel.LoadLevel(thisPath)
         thisLevel.Restart(ghosts, thisPath, player, self)
@@ -98,8 +100,7 @@ class game:
                     # if this isn't a blank tile
                     screen.blit(tileIDImage[useTile], (col * TILE_WIDTH ,
                                                            row * TILE_HEIGHT))
-        self.Pause(screen)
-        
+        self.Pause(screen)  
         self.GameOver(screen)
 
     #LifeCounter 
@@ -135,6 +136,7 @@ class game:
         if self.lives == 0:
             self.DrawGameOver(screen)
             self.mode = 3
+            thisSound.SetMode(-1)
     
     def DrawGameOver(self, screen):
         screen.fill((0, 0, 0))

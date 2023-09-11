@@ -18,8 +18,8 @@ ghostcolor = {
 
 class ghost:
     def __init__(self, ghostID):
-        self.x = 10  * TILE_HEIGHT
-        self.y = 10  * TILE_WIDTH
+        self.x = 0
+        self.y = 0
         self.velX = 0
         self.velY = 0
         self.speed = 2
@@ -28,6 +28,18 @@ class ghost:
         self.nearestCol = 0
 
         self.id = ghostID
+        if self.id == 0:
+            self.x = 10 * TILE_WIDTH
+            self.y = 10 * TILE_HEIGHT
+        elif self.id == 1:
+            self.x = 9 * TILE_WIDTH
+            self.y = 10 * TILE_HEIGHT
+        elif self.id == 2:
+            self.x = 8 * TILE_WIDTH
+            self.y = 10 * TILE_HEIGHT
+        elif self.id == 3:
+            self.x = 9 * TILE_WIDTH
+            self.y = 8 * TILE_HEIGHT
 
         # ghost "state" variable
         # 1 = normal
@@ -57,9 +69,19 @@ class ghost:
         self.animDelay = 0
 
     def RestartGhost(self, level, thisGame, path, thisPacman):
-        # move ghosts back to home
-        self.x = self.homeX
-        self.y = self.homeY
+        if self.id == 0:
+            self.x = 10 * TILE_WIDTH
+            self.y = 10 * TILE_HEIGHT
+        elif self.id == 1:
+            self.x = 9 * TILE_WIDTH
+            self.y = 10 * TILE_HEIGHT
+        elif self.id == 2:
+            self.x = 8 * TILE_WIDTH
+            self.y = 10 * TILE_HEIGHT
+        elif self.id == 3:
+            self.x = 9 * TILE_WIDTH
+            self.y = 8 * TILE_HEIGHT
+            
         self.velX = 0
         self.velY = 0
         self.state = 1
