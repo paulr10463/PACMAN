@@ -114,6 +114,7 @@ class game:
     def IncrementLives(self):
         if self.lives < 3:
             self.lives += 1 
+            self.soundInstance.snd_extralife.play()
 
     # Won the level
     def WonLevel(self, level, path, thisPacman, ghosts):
