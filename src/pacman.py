@@ -87,7 +87,6 @@ class pacman:
                         thisGame.AddToScore(thisGame.ghostValue)
                         thisGame.ghostValue = thisGame.ghostValue * 2
 
-                        # snd_eatgh.play()
                         self.soundInstance.snd_eatgh.play()
 
                         ghosts[i].state = 3
@@ -102,11 +101,6 @@ class pacman:
                         thisGame.DrawNumber(thisGame.ghostValue/2,
                             (self.x, self.y), screen, thisGame)
                         
-                        #print(""+ str(self.x) + "-" + str(self.y))
-                        
-                        # set game mode to brief pause after eating
-                        # thisGame.SetMode(5)
-
                         # set game mode to brief pause after eating
                         self.soundInstance.SetMode(9)
                         
@@ -142,9 +136,7 @@ class pacman:
             self.anim_pacmanCurrent = self.anim_pacmanD
         elif self.velY < 0:
             self.anim_pacmanCurrent = self.anim_pacmanU
-
-
-
+            
         screen.blit(self.anim_pacmanCurrent[self.animFrame],
                     (self.x, self.y))
 

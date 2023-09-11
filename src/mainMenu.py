@@ -31,7 +31,7 @@ class MainMenu:
             431.0, 
             self.options_positions[self.rectangle_position] + 3)
 
-    ###### Función para manejar las teclas presionadas ######
+    ###### Function to manage pressed keys ######
         # Check the current position and perform actions
         # 0 -> Play
         # 1 -> Scores
@@ -52,24 +52,23 @@ class MainMenu:
         
     def show(self):
         self.window = Tk()
-        ##################################################
         self.window.title("Pacman")
-        # Obtener dimensiones de la pantalla
+        # Get screen dimensions
         screen_width = self.window.winfo_screenwidth()
         screen_height = self.window.winfo_screenheight()
 
-        # Calcular coordenadas para centrar la ventana
+        # Calculate coordinates to center the window
         x_position = (screen_width - WINDOW_WIDTH) // 2
         y_position = (screen_height - WINDOW_HEIGHT) // 2
 
-        # Establecer la geometría de la ventana
+        # Set window geometry
         self.window.geometry(f"{WINDOW_WIDTH}x{WINDOW_HEIGHT}+{x_position}+{y_position}")
         self.window.configure(bg="#222429")
 
         self.canvas = Canvas(self.window, bg = "#222429", height = 720, width = 720, bd = 0, highlightthickness = 0, relief = "ridge")
 
-        ################## MENU ###################
 
+        ################## MENU ###################
         self.canvas.place(x = 0, y = 0)
         image_image_1 = PhotoImage(
             file=self.relative_to_assets("image_1.png"))
@@ -79,13 +78,9 @@ class MainMenu:
             image=image_image_1
         )
 
-        # -----------------------------------------------
-        ####### OJO: Manejar las posiciones desde aqui #########
-        x_center = self.canvas.winfo_reqwidth() / 2  # Obtenemos el ancho del canvas y dividimos por 2
+        ####### NOT3: Manage positions from here #########
+        x_center = self.canvas.winfo_reqwidth() / 2  # We obtain the width of the canvas and divide by 2
         y_offset = 70.0
-        # -----------------------------------------------
-
-        # -----------------------------------------------
 
         Option_play_image = PhotoImage(
             file=self.relative_to_assets("Option_play.png"))
@@ -95,14 +90,9 @@ class MainMenu:
             image=Option_play_image
         )
 
-        # -----------------------------------------------
         # the python interpreter needs this values to be assigned to some variable even if this is not used? wtf
-        
         scores = self.setImage("Option_scores.png", x_center, 305.0 + y_offset)
         exit = self.setImage("Option_exit.png", x_center, 376.0 + y_offset)
-
-        ##################################################
-        ##################################################
 
         ################## PIE DE MENU ###################
 
@@ -121,9 +111,7 @@ class MainMenu:
         ##################################################
         ##################################################
 
-        ########## DISEÑO SELECTOR DE OPCIONES ###########
-        # Posiciones de cada
-
+        ########## OPTION SELECTOR DESIGN ###########
         # Define the positions of buttons
         self.options_positions = [self.canvas.coords(Option_play)[1]+20.0, self.canvas.coords(Option_play)[1]+91, self.canvas.coords(Option_play)[1]+162]
 

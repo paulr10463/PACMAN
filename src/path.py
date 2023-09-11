@@ -8,7 +8,7 @@ class path_finder:
         # use the Unfold( (row, col) ) function to convert a 2D coordinate pair
         # into a 1D index to use with this array.
         self.size = (-1, -1)  # rows by columns
-        self.map = {}  # Inicializar el diccionario
+        self.map = {}  # initialize the dictionary
 
         self.pathChainRev = ""
         self.pathChain = ""
@@ -78,9 +78,6 @@ class path_finder:
 
                         if self.IsInOpenList(thisNeighbor) and cost < self.GetG(thisNeighbor):
                             self.RemoveFromOpenList(thisNeighbor)
-
-                        # if self.IsInClosedList( thisNeighbor ) and cost < self.GetG( thisNeighbor ):
-                        #	self.RemoveFromClosedList( thisNeighbor )
 
                         if not self.IsInOpenList(thisNeighbor) and not self.IsInClosedList(thisNeighbor):
                             self.AddToOpenList(thisNeighbor)
@@ -152,13 +149,6 @@ class path_finder:
 
     def SetG(self, row_col, newValue):
         (row, col) = row_col
-
-        ##print(row_col)
-        ##print(self.Unfold((row, col)))
-        """for key, value in self.map.items():
-            print("se intenta")
-            print(f"Key: {key}, Value: {value}")"""
-
         self.map[self.Unfold((row, col))].g = newValue
 
     def SetH(self, row_col, newValue):

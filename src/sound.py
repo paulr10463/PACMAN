@@ -4,7 +4,7 @@ if os.name == "nt":
     SCRIPT_PATH = os.getcwd()
 
 class sound:
-    _instance = None  # Almacena la única instancia de la clase
+    _instance = None  # Stores the only instance of the class
     
     def __new__(cls):
         if cls._instance is None:

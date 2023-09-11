@@ -1,5 +1,4 @@
 import os
-import random
 
 TILE_WIDTH = TILE_HEIGHT = 24
 LEVEL_WIDTH = 19

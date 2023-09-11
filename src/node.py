@@ -1,4 +1,3 @@
-
 class node:
     def __init__(self):
         self.g = -1  # movement cost to move from previous node to this one (usually +10)

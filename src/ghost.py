@@ -1,7 +1,6 @@
 import utils
 import os
 import random
-import math
 
 if os.name == "nt":
     SCRIPT_PATH = os.getcwd()
@@ -95,7 +94,6 @@ class ghost:
             randRow = random.randint(1, level.lvlHeight - 2)
             randCol = random.randint(1, level.lvlWidth - 2)
 
-        # print "Ghost " + str(i) + " headed towards " + str((randRow, randCol))
         self.currentPath = path.FindPath((self.nearestRow, self.nearestCol), (randRow, randCol))
         self.FollowNextPathWay(path, thisPacman, level, thisGame) 
 
@@ -175,7 +173,7 @@ class ghost:
             self.animDelay = 0
 
     def UpdateSpeed(self, player):
-        # Aumenta la velocidad en función de los puntos obtenidos por Pac-Man
+        # increases speed based on the points obtained by Pac-Man
         self.speed = 2 + (player.points // 100)
 
     def Move(self, path, player, thisGame, thisLevel):
@@ -203,7 +201,6 @@ class ghost:
                 self.FollowNextPathWay(path, player, thisLevel, thisGame)
                 
     def FollowNextPathWay(self, path, player, thisLevel, thisGame):
-        # print "Ghost " + str(self.id) + " rem: " + self.currentPath
         # only follow this pathway if there is a possible path found!
         if not self.currentPath == False:
 

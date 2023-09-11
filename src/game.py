@@ -1,8 +1,6 @@
-
 import utils
 import os
 import pygame
-import time
 import sys
 import sound
 
@@ -12,7 +10,7 @@ if os.name == "nt":
     SCRIPT_PATH = os.getcwd()
 
 SCREEN_TILE_SIZE_HEIGHT = 24
-SCREEN_TILE_SIZE_WIDTH = 20
+SCREEN_TILE_SIZE_WIDTH = 19
 TILE_WIDTH = TILE_HEIGHT = 24
 
 SCORE_COLWIDTH = 13  # width of each character
@@ -58,8 +56,7 @@ class game:
         self.score = 0
         self.lives = 3
         self.pause = False
-        #Music
-        self.soundInstance.SetMode(1)
+        self.soundInstance.SetMode(1)   # music
         self.soundInstance.snd_levelintro.play()
         self.mode = 1
         thisLevel.LoadLevel(thisPath)
@@ -74,7 +71,6 @@ class game:
                 thisID = crossRefData[element]
                 tileIDImage[thisID] = utils.get_image_surface(os.path.join(SCRIPT_PATH, "res", "tiles", element + ".gif"))
         self.fruitTiles = [tileID['fruit-0'], tileID['fruit-1'], tileID['fruit-2'], tileID['fruit-3'], tileID['fruit-4']]
-        #print(fruitTiles)    
 
     def DrawMap(self, level, screen, time, ghosts, thisGame, path, thisPacman):
         self.GetCrossRef()
@@ -114,21 +110,20 @@ class game:
 
         return True  # If no pellets are remaining, maze is completed
     
-    # RF 13 : Incrementar la vida 
+    # Increase life
     def IncrementLives(self):
         if self.lives < 3:
             self.lives += 1 
 
     # Won the level
     def WonLevel(self, level, path, thisPacman, ghosts):
-            self.IncrementLives()  # Increment lives if maze is completed
+            self.IncrementLives()  # Increases life if the maze is completed
             level.LoadLevel(path)
             pygame.display.update()
-            # self.ghostsSpeed += 0.1
             self.soundInstance.SetMode(111)
             for i in range(0, 4, 1):
                 ghosts[i].RestartGhost(level, self, path, thisPacman)
-                # ghosts[i].speed += self.ghostsSpeed
+                # ghosts[i].UpdateSpeed(thisPacman)
                 
             thisPacman.x = thisPacman.homeX
             thisPacman.y = thisPacman.homeY
@@ -239,28 +234,10 @@ class game:
 
     def SetMode(self, newMode):
         self.mode = newMode
-        # self.modeTimer = 0
-        """	
-        if newMode == 0:
-            self.PlayBackgoundSound(snd_levelintro)
-        elif newMode == 1:
-            self.PlayBackgoundSound(snd_default)
-        elif newMode == 2:
-            self.PlayBackgoundSound(snd_death)
-        elif newMode == 8:
-            self.PlayBackgoundSound(snd_gh2gohome)
-        elif newMode == 9:
-            self.PlayBackgoundSound(snd_extrapac)
-        elif newMode == 11:
-            self.PlayBackgoundSound(snd_love)
-        else:
-            channel_backgound.stop()
-        """
 
     def DrawNumber(self, number, x_y, screen, thisGame):
         global rect_list
         (x, y) = x_y
-        # print(x, y, "---")
         strNumber = str(number)
 
         for i in range(0, len(str(number)), 1):
@@ -270,26 +247,14 @@ class game:
             
             screen.blit(self.digit[iDigit], (x + i * SCORE_COLWIDTH, y))
         
-        pygame.display.update()  # Actualiza la pantalla después de dibujar
+        pygame.display.update()  # Refresh screen after drawing
 
         if y < self.screenSize[1] - SCORE_YOFFSET:
             print(x, y, "---")
-            # Puedes agregar un pequeño retraso si es necesario
-            pygame.time.delay(500)  # Retraso de 500 milisegundos (0.5 segundos)
+            # You can add a small delay if necessary
+            pygame.time.delay(500)  # 500 millisecond delay (0.5 seconds)
 
 
     def DrawScore(self, screen, thisGame):
-        #global rect_list
         self.DrawNumber(self.score, (SCORE_XOFFSET + 80, self.screenSize[1] - SCORE_YOFFSET + 5), screen, thisGame)
-        
-        """for i in range(0, self.lives, 1):
-            screen.blit(self.imLife, (34 + i * 10 + 16, self.screenSize[1] - 18))
-
-        if self.mode == 3:
-            screen.blit(self.imGameOver, (self.screenSize[0] / 2 - (self.imGameOver.get_width() / 2),
-                                          self.screenSize[1] / 2 - (self.imGameOver.get_height() / 2)))
-        elif self.mode == 0 or self.mode == 4:
-            screen.blit(self.imReady, (self.screenSize[0] / 2 - 20, self.screenSize[1] / 2 + 12))
-
-        self.DrawNumber(self.levelNum, (0, self.screenSize[1] - 20))"""
 
