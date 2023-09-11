@@ -84,3 +84,4 @@ if option == 0:
         
         pygame.display.update()
         clock.tick(60)
+        

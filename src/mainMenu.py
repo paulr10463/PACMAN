@@ -1,5 +1,6 @@
 from pathlib import Path
-from tkinter import Tk, Canvas, PhotoImage
+from tkinter import Tk, Canvas, PhotoImage, Toplevel, Label
+from TablaPutuaciones import TablaPuntuaciones
 import os
 
 WINDOW_WIDTH = 720
@@ -41,7 +42,7 @@ class MainMenu:
                 self.option = 0
                 self.window.destroy()
             elif self.rectangle_position == 1:
-                self.option = 1
+                self.mostrarScores()
             elif self.rectangle_position == 2:
                 self.window.destroy()
 
@@ -141,4 +142,9 @@ class MainMenu:
         self.window.bind('<KeyPress>', lambda event: self.on_key_press(event))
         self.window.mainloop()
         return self.option
-
+    def mostrarScores(self):
+        tabla_Puntuaciones = TablaPuntuaciones()
+        tabla_Puntuaciones.cargarPuntuaciones()
+        scores_window = Toplevel(self.window)
+        scores_window.title("Marcador")
+        scores=self.TablaPuntuaciones(scores_window, tabla_Puntuaciones)

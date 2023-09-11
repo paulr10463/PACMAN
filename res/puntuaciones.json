@@ -1,0 +1,42 @@
+[
+    {
+        "nombre": "Juan",
+        "puntuacion": 1700
+    },
+    {
+        "nombre": "Pedro",
+        "puntuacion": 1500
+    },
+    {
+        "nombre": "Luis",
+        "puntuacion": 1200
+    },
+    {
+        "nombre": "Maria",
+        "puntuacion": 1000
+    },
+    {
+        "nombre": "Ana",
+        "puntuacion": 900
+    },
+    {
+        "nombre": "Sara",
+        "puntuacion": 800
+    },
+    {
+        "nombre": "Sofia",
+        "puntuacion": 700
+    },
+    {
+        "nombre": "Lucia",
+        "puntuacion": 600
+    },
+    {
+        "nombre": "Laura",
+        "puntuacion": 500
+    },
+    {
+        "nombre": "Carmen",
+        "puntuacion": 400
+    }
+]
