@@ -46,6 +46,7 @@ class game:
         self.imPressP = utils.get_image_surface(os.path.join(SCRIPT_PATH, "res", "text", "pressP.png"))
         self.pressP_Img_scaled=pygame.transform.scale(self.imPressP, (100, 25))
         self.fruit = -1
+        self.ghostsSpeed = 0
         self.fruitEaten = False
         self.fruitLap = 0
         self.fruitTiles = {}
@@ -76,7 +77,7 @@ class game:
         self.fruitTiles = [tileID['fruit-0'], tileID['fruit-1'], tileID['fruit-2'], tileID['fruit-3'], tileID['fruit-4']]
         #print(fruitTiles)    
 
-    def DrawMap(self, level, screen, time):
+    def DrawMap(self, level, screen, time, ghosts, thisGame, path, thisPacman):
         self.GetCrossRef()
         lap = (time//LAP_TIME) % 5   #each 10 sec is a lap
         if self.fruitLap != lap:
@@ -103,14 +104,13 @@ class game:
         self.Pause(screen)  
         self.GameOver(screen)
         if self.HasPlayerCompletedMaze(level):
-            self.IncrementLives()  # Increment lives if maze is completed
-            
+            self.WonLevel(level, path, thisPacman, ghosts)
 
     def HasPlayerCompletedMaze(self, level):
         # Loop through the entire map and check if there are any remaining pellets
         for row in range(level.lvlHeight):
             for col in range(level.lvlWidth):
-                if level.GetMapTile((row, col)) == tileID['pellet']:
+                if level.GetMapTile((row, col)) == self.GetTileID().get('pellet'):
                     return False  # If there is at least one pellet remaining, maze is not completed
 
         return True  # If no pellets are remaining, maze is completed
@@ -120,6 +120,24 @@ class game:
         if self.lives < 3:
             self.lives += 1 
 
+    # Won the level
+    def WonLevel(self, level, path, thisPacman, ghosts):
+            self.IncrementLives()  # Increment lives if maze is completed
+            level.LoadLevel(path)
+            pygame.display.update()
+            # self.ghostsSpeed += 0.1
+            thisSound.SetMode(111)
+            for i in range(0, 4, 1):
+                ghosts[i].RestartGhost(level, self, path, thisPacman)
+                # ghosts[i].speed += self.ghostsSpeed
+                
+            thisPacman.x = thisPacman.homeX
+            thisPacman.y = thisPacman.homeY
+            # thisPacman.velX += 0.5
+            # thisPacman.velY += 0.5
+            thisPacman.anim_pacmanCurrent = thisPacman.anim_pacmanS
+            thisPacman.animFrame = 3
+            
     #LifeCounter 
     def DrawLifes(self, screen):
         for i in range(0, self.lives, 1):

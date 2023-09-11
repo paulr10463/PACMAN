@@ -22,7 +22,7 @@ class ghost:
         self.y = 0
         self.velX = 0
         self.velY = 0
-        self.speed = 2
+        self.speed = 1.5
 
         self.nearestRow = 0
         self.nearestCol = 0
@@ -85,13 +85,13 @@ class ghost:
         self.velX = 0
         self.velY = 0
         self.state = 1
-        self.speed = 2
+        self.speed = 1.5
         self.Move(path, thisPacman, thisGame, level)
 
         # give each ghost a path to a random spot (containing a pellet)
         (randRow, randCol) = (0, 0)
 
-        while not level.GetMapTile((randRow, randCol)) == thisGame.GetTileID().get('pellet') or (randRow, randCol) == (0, 0):
+        while not level.GetMapTile((randRow, randCol)) == thisGame.GetTileID().get('pellet') or (randRow, randCol) == (10 * TILE_HEIGHT, 10 * TILE_WIDTH):
             randRow = random.randint(1, level.lvlHeight - 2)
             randCol = random.randint(1, level.lvlWidth - 2)
 

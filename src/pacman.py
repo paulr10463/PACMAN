@@ -16,7 +16,7 @@ class pacman:
         self.y = 16 * TILE_HEIGHT
         self.velX = 2
         self.velY = 0
-        self.speed = 2
+        self.speed = 1.5
 
         self.nearestRow = 0
         self.nearestCol = 0
