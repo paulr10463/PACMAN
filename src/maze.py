@@ -82,3 +82,5 @@ class level:
 
         player.anim_pacmanCurrent = player.anim_pacmanS
         player.animFrame = 3
+        
+    

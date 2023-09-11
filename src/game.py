@@ -173,10 +173,7 @@ class game:
 
     def AddToScore(self, amount):
         self.score += amount  
-        print("Score: " + str(self.score))
-        if self.score >= 7000:
-            self.increase_player_lives()
-            self.score = 0   
+        print("Score: " + str(self.score)) 
 
     def GetFruitTiles(self):
         return self.fruitTiles
@@ -195,8 +192,7 @@ class game:
 
     def SetMode(self, newMode):
         self.mode = newMode
-        
-    def increase_player_lives(self):
-        self.lives += 1
+
+
 
     

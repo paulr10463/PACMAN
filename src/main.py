@@ -65,6 +65,7 @@ if option == 0:
         thisGame.DrawMap(thisLevel, screen, pygame.time.get_ticks(), thisPath)
         thisGame.DrawLifes(screen)
         thisPacman.Move(thisLevel, thisGame, ghosts, thisPath, screen)
+        
         ##ghosts[0].Move(thisPath, thisPacman, thisGame, thisLevel)   
         ##ghosts[2].Move(thisPath, thisPacman, thisGame, thisLevel)  
         
@@ -97,3 +98,7 @@ if option == 0:
         
         pygame.display.update()
         clock.tick(60)
+
+        
+
+
