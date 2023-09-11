@@ -87,7 +87,7 @@ class ghost:
         self.state = 1
         self.speed = 1.5
         self.Move(path, thisPacman, thisGame, level)
-
+        
         # give each ghost a path to a random spot (containing a pellet)
         (randRow, randCol) = (0, 0)
 

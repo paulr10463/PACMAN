@@ -27,9 +27,9 @@ tileIDName = {}  # gives tile name (when the ID# is known)
 tileID = {}  # gives tile ID (when the name is known)
 tileIDImage = {}  # gives tile image (when the ID# is known)
 
-thisSound = sound.sound()
 class game:
     def __init__(self):
+        self.soundInstance = sound.sound()
         self.lives = 3
         self.mode = 1
         self.ghostValue = 0
@@ -59,9 +59,8 @@ class game:
         self.lives = 3
         self.pause = False
         #Music
-        thisSound.SetMode(1)
-        thisSound.snd_levelintro.play()
-        time.sleep(4)
+        self.soundInstance.SetMode(1)
+        self.soundInstance.snd_levelintro.play()
         self.mode = 1
         thisLevel.LoadLevel(thisPath)
         thisLevel.Restart(ghosts, thisPath, player, self)
@@ -151,7 +150,7 @@ class game:
                 if event.key == pygame.K_p:
                     self.paused = not self.paused 
         while self.paused:
-            thisSound.SetMode(111)
+            self.soundInstance.SetMode(111)
             self.DrawPauseScreen(screen)
             pygame.display.flip()
             for event in pygame.event.get():
@@ -160,7 +159,7 @@ class game:
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_p:
                         self.paused = not self.paused 
-                        thisSound.SetMode(1)
+                        self.soundInstance.SetMode(1)
             
     def DrawPauseScreen (self,screen):
         screen.fill((0, 0, 0))
@@ -171,7 +170,7 @@ class game:
         if self.lives == 0:
             self.DrawGameOver(screen)
             self.mode = 3
-            thisSound.SetMode(-1)
+            self.soundInstance.SetMode(-1)
     
     def DrawGameOver(self, screen):
         screen.fill((0, 0, 0))
@@ -230,7 +229,7 @@ class game:
         level.SetMapTile((12, 9), 0)
         self.fruit = -1
         self.fruitEaten = True
-        thisSound.snd_eatfruit.play()
+        self.soundInstance.snd_eatfruit.play()
         self.AddToScore(100)
 
     def setNewFruit(self, level, fruit):
