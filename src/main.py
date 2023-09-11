@@ -58,7 +58,7 @@ if option == 0:
                 sys.exit(0)
                 
 
-    thisGame.DrawMap(thisLevel, screen, pygame.time.get_ticks())
+    thisGame.DrawMap(thisLevel, screen, pygame.time.get_ticks(), ghosts, thisGame, thisPath, thisPacman)
     for i in range(0, 4, 1):
         ghosts[i].Move(thisPath, thisPacman, thisGame, thisLevel)
         ghosts[i].Draw(thisGame, thisPacman, screen, ghosts)
