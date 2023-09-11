@@ -4,6 +4,13 @@ if os.name == "nt":
     SCRIPT_PATH = os.getcwd()
 
 class sound:
+    _instance = None  # Almacena la única instancia de la clase
+    
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super(sound, cls).__new__(cls)
+        return cls._instance
+    
     def __init__(self):
         pygame.mixer.pre_init(22050, -16, 1, 1024)
         pygame.mixer.init()

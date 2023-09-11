@@ -9,7 +9,6 @@ if os.name == "nt":
     
 TILE_WIDTH = TILE_HEIGHT = 24
 
-thisSound = sound.sound()
 class pacman:
     def __init__(self):
         self.x = 9 * TILE_WIDTH
@@ -17,7 +16,7 @@ class pacman:
         self.velX = 2
         self.velY = 0
         self.speed = 2
-
+        self.soundInstance = sound.sound()  
         self.nearestRow = 0
         self.nearestCol = 0
 
@@ -78,7 +77,7 @@ class pacman:
                         thisGame.SetMode(1)
                         pygame.display.update()
                         print("Crash")
-                        thisSound.snd_death.play()
+                        self.soundInstance.snd_death.play()
                         time.sleep(2)
 
                     elif ghosts[i].state == 2:
@@ -89,7 +88,7 @@ class pacman:
                         thisGame.ghostValue = thisGame.ghostValue * 2
 
                         # snd_eatgh.play()
-                        thisSound.snd_eatgh.play()
+                        self.soundInstance.snd_eatgh.play()
 
                         ghosts[i].state = 3
                         ghosts[i].speed = ghosts[i].speed * 4
@@ -109,7 +108,7 @@ class pacman:
                         # thisGame.SetMode(5)
 
                         # set game mode to brief pause after eating
-                        thisSound.SetMode(9)
+                        self.soundInstance.SetMode(9)
                         
                         
         else:
@@ -123,7 +122,7 @@ class pacman:
 
             if thisGame.ghostTimer == 0:
                 # thisGame.PlayBackgoundSound(snd_default)
-                thisSound.SetMode(1)
+                self.soundInstance.SetMode(1)
                 for i in range(0, 4, 1):
                     if ghosts[i].state == 2:
                         ghosts[i].state = 1
@@ -199,7 +198,7 @@ class pacman:
                         thisGame.AddToScore(10)
 
                         #Sound of pellet
-                        thisSound.snd_pellet[self.pelletSndNum].play()
+                        self.soundInstance.snd_pellet[self.pelletSndNum].play()
                         self.pelletSndNum = 1 - self.pelletSndNum
                     
                     elif result == thisGame.GetTileID().get('pellet-power'):
@@ -215,8 +214,8 @@ class pacman:
 
 
                         #Sound of pelletPower
-                        thisSound.snd_powerpellet.play()
-                        thisSound.SetMode(9) #esto genera que el sonido por defecto del bg cambie
+                        self.soundInstance.snd_powerpellet.play()
+                        self.soundInstance.SetMode(9) #esto genera que el sonido por defecto del bg cambie
                         
 
                     elif result == thisGame.GetTileID().get('door-h'):
