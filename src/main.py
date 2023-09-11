@@ -56,6 +56,14 @@ if option == 0:
         for event in events:
             if event.type == QUIT:
                 sys.exit(0)
+                
+
+    thisGame.DrawMap(thisLevel, screen, pygame.time.get_ticks())
+    for i in range(0, 4, 1):
+        ghosts[i].Move(thisPath, thisPacman, thisGame, thisLevel)
+        ghosts[i].Draw(thisGame, thisPacman, screen, ghosts)
+    thisPacman.Draw(screen, thisGame)  
+    thisGame.StartNewGame(thisPath, thisLevel, thisPacman, ghosts)
 
     ########### GAME LOOP ###########
     while True:
@@ -64,33 +72,11 @@ if option == 0:
         thisGame.ChangeDirection(thisPacman, thisLevel, thisPath, ghosts)
         thisGame.DrawMap(thisLevel, screen, pygame.time.get_ticks())
         thisGame.DrawLifes(screen)
-        
+
         if thisGame.mode == 1:
             thisPacman.Move(thisLevel, thisGame, ghosts, thisPath, screen)
-            ##ghosts[0].Move(thisPath, thisPacman, thisGame, thisLevel)   
-            ##ghosts[2].Move(thisPath, thisPacman, thisGame, thisLevel)
-             
             for i in range(0, 4, 1):
                 ghosts[i].Move(thisPath, thisPacman, thisGame, thisLevel)
-                (randRow, randCol) = (0, 0)
-                if pygame.time.get_ticks() < 250:
-                    if i == 0:  # Rojo
-                        randRow = 1  # Esquina superior izquierda
-                        randCol = 1
-                    elif i == 1:  # Rosa
-                        randRow = 1  # Mover hacia arriba y luego a la izquierda
-                        randCol = thisLevel.lvlWidth - 2
-                    elif i == 2:  # Rosa
-                        randRow = thisLevel.lvlHeight - 3  # Esquina superior derecha
-                        randCol = 1
-                    elif i == 3:  # Celeste
-                        randRow = thisLevel.lvlHeight - 3  # Esquina inferior derecha
-                        randCol = thisLevel.lvlWidth - 2
-                    ghosts[i].currentPath = thisPath.FindPath((ghosts[i].nearestRow, ghosts[i].nearestCol), (randRow, randCol))
-                    ghosts[i].FollowNextPathWay(thisPath, thisPacman, thisLevel, thisGame)
-
-            
-            for i in range(0, 4, 1):
                 ghosts[i].Draw(thisGame, thisPacman, screen, ghosts)  
 
             thisPacman.Draw(screen, thisGame)

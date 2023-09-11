@@ -60,7 +60,6 @@ class game:
         #Music
         thisSound.SetMode(1)
         thisSound.snd_levelintro.play()
-        time.sleep(4)
         self.mode = 1
         thisLevel.LoadLevel(thisPath)
         thisLevel.Restart(ghosts, thisPath, player, self)
